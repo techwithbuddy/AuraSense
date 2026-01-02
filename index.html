@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>AuraSense — Accessibility for people with visual impairments</title>
+  <meta name="description" content="AuraSense helps blind people and those with eye conditions access resources, training, and assistive technology.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -17,6 +21,7 @@
         <ul class="nav">
           <li><a href="#">Home</a></li>
           <li><a href="#features">What we do</a></li>
+          <li><a href="#how-it-works">How it works</a></li>
           <li><a href="#get-involved">Get involved</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -26,38 +31,90 @@
 
   <main id="main" role="main" tabindex="-1">
     <section class="hero" aria-labelledby="hero-heading">
-      <div class="container">
-        <h2 id="hero-heading">Making the world accessible for people with visual impairments</h2>
-        <p id="intro">AuraSense provides resources, training, assistive-technology guidance, and community support for blind people and people with eye defects.</p>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h2 id="hero-heading">Making the world accessible for people with visual impairments</h2>
+          <p id="intro">AuraSense provides resources, training, assistive-technology guidance, and community support for blind people and people with eye defects.</p>
 
-        <div class="controls" role="region" aria-label="Accessibility controls">
-          <button id="readBtn" class="control">🔊 Read aloud</button>
-          <button id="stopReadBtn" class="control">⏹ Stop</button>
-          <button id="increaseFont" class="control">A+</button>
-          <button id="decreaseFont" class="control">A−</button>
+          <div class="hero-cta">
+            <a class="cta" href="#get-involved">Get started</a>
+            <a class="cta ghost" href="#features">Learn more</a>
+          </div>
+
+          <div class="controls" role="region" aria-label="Accessibility controls">
+            <button id="readBtn" class="control">🔊 Read aloud</button>
+            <button id="stopReadBtn" class="control">⏹ Stop</button>
+            <button id="increaseFont" class="control">A+</button>
+            <button id="decreaseFont" class="control">A−</button>
+          </div>
+
+          <p class="hint">Keyboard shortcuts: <kbd>Alt</kbd> + <kbd>R</kbd> read, <kbd>Alt</kbd> + <kbd>H</kbd> toggle contrast, <kbd>Alt</kbd> + <kbd>+</kbd>/<kbd>-</kbd> font size</p>
         </div>
 
-        <p class="hint">Keyboard shortcuts: <kbd>Alt</kbd> + <kbd>R</kbd> read, <kbd>Alt</kbd> + <kbd>H</kbd> toggle contrast, <kbd>Alt</kbd> + <kbd>+</kbd>/<kbd>-</kbd> font size</p>
+        <div class="hero-visual" aria-hidden="true">
+          <!-- simple decorative svg -->
+          <svg width="320" height="220" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                <stop offset="0%" stop-color="#0066cc"/>
+                <stop offset="100%" stop-color="#00a896"/>
+              </linearGradient>
+            </defs>
+            <rect rx="18" width="320" height="220" fill="url(#g)"/>
+            <g fill="#fff" opacity="0.9">
+              <circle cx="60" cy="80" r="22"/>
+              <rect x="120" y="60" width="140" height="30" rx="6"/>
+              <rect x="120" y="110" width="140" height="30" rx="6"/>
+            </g>
+          </svg>
+        </div>
       </div>
     </section>
 
     <section id="features" class="features" aria-labelledby="features-heading">
       <div class="container">
         <h3 id="features-heading">What we offer</h3>
-        <ul>
-          <li>
+        <div class="cards">
+          <article class="card">
             <h4>Guides & Training</h4>
             <p>Step-by-step tutorials for using screen readers, magnifiers, and accessible mobile features.</p>
-          </li>
-          <li>
+          </article>
+          <article class="card">
             <h4>Assistive Tech</h4>
             <p>Recommendations and reviews of accessible hardware and apps.</p>
-          </li>
-          <li>
+          </article>
+          <article class="card">
             <h4>Community & Support</h4>
             <p>Peer groups, volunteer programs, and local events.</p>
-          </li>
-        </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how-it-works" class="how" aria-labelledby="how-heading">
+      <div class="container">
+        <h3 id="how-heading">How it works</h3>
+        <div class="cards">
+          <article class="card">
+            <h4>Learn</h4>
+            <p>Free, accessible tutorials and workshops to build confidence with assistive tools.</p>
+          </article>
+          <article class="card">
+            <h4>Try</h4>
+            <p>Hands-on sessions and recommended apps you can try today.</p>
+          </article>
+          <article class="card">
+            <h4>Connect</h4>
+            <p>Find local support groups and mentors.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials" aria-labelledby="testimonials-heading">
+      <div class="container">
+        <h3 id="testimonials-heading">Success stories</h3>
+        <blockquote class="testimonial">“AuraSense helped me learn screen reader shortcuts — now I feel independent.” <cite>— Maya</cite></blockquote>
       </div>
     </section>
 
@@ -65,7 +122,25 @@
       <div class="container">
         <h3 id="involved-heading">Get involved</h3>
         <p>Volunteer, donate, or join our workshops. Everyone is welcome.</p>
-        <p><a class="cta" href="#contact">Contact us to learn more</a></p>
+
+        <div class="get-grid">
+          <div>
+            <p><a class="cta" href="#contact">Join a workshop</a></p>
+            <p><a class="cta ghost" href="#how-it-works">Learn how to help</a></p>
+          </div>
+
+          <form id="contactForm" class="contact-form" aria-labelledby="contact-form-heading">
+            <h4 id="contact-form-heading">Contact us</h4>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" required>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required>
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <button type="submit" class="cta">Send message</button>
+            <div id="formMessage" class="sr-only" aria-live="polite"></div>
+          </form>
+        </div>
       </div>
     </section>
   </main>
