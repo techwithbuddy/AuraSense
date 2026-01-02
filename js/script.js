@@ -4,7 +4,6 @@
   const stopBtn = document.getElementById('stopReadBtn');
   const increaseBtn = document.getElementById('increaseFont');
   const decreaseBtn = document.getElementById('decreaseFont');
-  const contrastToggle = document.getElementById('contrastToggle');
   const navToggle = document.getElementById('navToggle');
   const mainNav = document.getElementById('main-nav');
   const announcer = document.createElement('div');
@@ -19,6 +18,17 @@
   const year = document.getElementById('year');
 
   year.textContent = new Date().getFullYear();
+
+  // dynamically set CSS variable for header offset so fixed header doesn't cover content
+  const siteHeader = document.querySelector('.site-header');
+  function updateHeaderOffset(){
+    if(!siteHeader) return;
+    const h = siteHeader.offsetHeight;
+    document.documentElement.style.setProperty('--header-offset', h + 'px');
+  }
+  window.addEventListener('resize', ()=>{ setTimeout(updateHeaderOffset, 60); });
+  // initial set after layout
+  setTimeout(updateHeaderOffset, 80);
 
   function announce(msg){
     if(!announcer) return;
@@ -63,15 +73,6 @@
   });
   decreaseBtn.addEventListener('click', ()=>{
     setBaseFontSize(Math.max(12, getBaseFontSize()-2));
-  });
-
-  // Contrast toggle
-  contrastToggle.addEventListener('click', ()=>{
-    const pressed = contrastToggle.getAttribute('aria-pressed') === 'true';
-    contrastToggle.setAttribute('aria-pressed', String(!pressed));
-    const enabled = !pressed;
-    document.body.classList.toggle('high-contrast', enabled);
-    announce(enabled ? 'High contrast enabled' : 'High contrast disabled');
   });
 
   // Nav toggle for small screens + animated open/close and underline positioning
@@ -129,15 +130,11 @@
   window.addEventListener('keydown', (e)=>{
     if(!e.altKey) return;
     if(e.key.toLowerCase() === 'r'){ e.preventDefault(); readBtn.focus(); readBtn.click(); }
-    if(e.key.toLowerCase() === 'h'){ e.preventDefault(); contrastToggle.focus(); contrastToggle.click(); }
     if(e.key === '+'){ e.preventDefault(); increaseBtn.click(); }
     if(e.key === '-') { e.preventDefault(); decreaseBtn.click(); }
   });
 
-  // Ensure main can be focused so skip link works well
-  document.querySelector('.skip-link').addEventListener('click', ()=>{
-    main.focus();
-  });
+
 
   // Contact form handler (demo)
   if(contactForm){

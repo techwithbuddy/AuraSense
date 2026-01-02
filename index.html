@@ -11,12 +11,13 @@
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <a class="skip-link" href="#main">Skip to main content</a>
 
   <header class="site-header" role="banner">
-    <div class="container">
-      <h1 class="logo">AuraSense</h1>
-      <button id="contrastToggle" class="control" aria-pressed="false">Toggle high contrast</button>
+    <div class="container header-inner">
+      <a class="logo" href="#" aria-label="AuraSense home">AuraSense</a>
+      <div class="header-actions">
+        <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">☰</button>
+      </div>
       <nav id="main-nav" class="main-nav nav-bar" role="navigation" aria-label="Main navigation" hidden>
         <div class="nav-inner">
           <ul class="nav nav-horizontal" role="menubar" aria-label="Primary">
@@ -51,7 +52,7 @@
             <button id="decreaseFont" class="control">A−</button>
           </div>
 
-          <p class="hint">Keyboard shortcuts: <kbd>Alt</kbd> + <kbd>R</kbd> read, <kbd>Alt</kbd> + <kbd>H</kbd> toggle contrast, <kbd>Alt</kbd> + <kbd>+</kbd>/<kbd>-</kbd> font size</p>
+          <p class="hint">Keyboard shortcuts: <kbd>Alt</kbd> + <kbd>R</kbd> read, <kbd>Alt</kbd> + <kbd>+</kbd>/<kbd>-</kbd> font size</p>
         </div>
 
         <div class="hero-visual" aria-hidden="true">
