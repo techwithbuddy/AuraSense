@@ -2,7 +2,7 @@
 :root{
   --base-font-size: 20px;
   --max-width: 1100px;
-  --brand-color: #0066cc;
+  --brand-color: #9200cc;
   --accent: #00a896;
   --bg: #fff9f2; /* soft cream background */
   --panel: #fffdf9; /* slightly lighter panel for cards/modals */
@@ -17,12 +17,25 @@ body{
   margin:0;
   font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   font-size:var(--base-font-size);
-  background:var(--bg);
+  /* animated gradient background with subtle overlay to preserve contrast */
+  background:
+    linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.35)),
+    linear-gradient(270deg, #8a2387 0%, #e94057 25%, #f27121 50%, #ff5f6d 75%, #fdbb2d 100%);
+  background-size: 800% 800%;
+  animation: gradientShift 18s ease infinite;
   color:var(--text);
   line-height:1.5;
   /* offset content to account for fixed header */
   padding-top: var(--header-offset, 64px);
 }
+
+/* animated gradient keyframes */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .container{max-width:var(--max-width);margin:0 auto;padding:1rem}
 
 /* Screen-reader only utility */
@@ -93,7 +106,7 @@ section{scroll-margin-top:calc(var(--header-offset) + 12px)}
 .guides-hero .lead{font-weight:700}
 .guides-grid .cards{margin-top:1rem}
 .card-link{display:block;color:inherit;text-decoration:none}
-.card-link:focus{outline:3px solid rgba(255,191,71,0.18);outline-offset:3px}
+.card-link:focus{outline:3px solid rgb(249, 249, 248);outline-offset:3px}
 .card-link:hover .card, .card-link:focus .card{transform:translateY(-6px)}
 
 .resources .card{display:block}
@@ -196,6 +209,12 @@ section{scroll-margin-top:calc(var(--header-offset) + 12px)}
 /* reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{transition:none!important;animation:none!important}
+  /* Provide a simple static background for users who prefer reduced motion */
+  body{
+    background: linear-gradient(270deg, #8a2387, #e94057);
+    background-size: cover;
+    animation: none !important;
+  }
 }
 
 footer{border-top:1px solid #e6e6e6;padding:1rem 0;margin-top:2rem}
@@ -267,4 +286,15 @@ footer{border-top:1px solid #e6e6e6;padding:1rem 0;margin-top:2rem}
   .login-card{grid-template-columns:1fr}
 }
 >>>>>>> 9898bfcdeffe70c113fec722fac537891324b1cc
+
+/* small floating control to allow users to disable animated background */
+.gradient-toggle{
+  position:fixed;right:1rem;bottom:1rem;z-index:1100;background:rgba(255,255,255,0.95);border:1px solid rgba(0,0,0,0.06);padding:.5rem .65rem;border-radius:999px;box-shadow:0 6px 18px rgba(2,6,23,0.08);cursor:pointer;font-weight:700;font-size:.95rem}
+.gradient-toggle:focus{outline:3px solid var(--focus)}
+
+body.no-gradient{animation:none !important;background: linear-gradient(270deg, #8a2387, #e94057) !important}
+
+@media (max-width:520px){
+  .gradient-toggle{right:.6rem;bottom:.9rem;padding:.45rem .6rem}
+}
 
