@@ -207,4 +207,38 @@
       contactForm.reset();
     });
   }
+
+  // Gradient background toggle (persisted)
+  (function initGradientToggle(){
+    try{
+      const KEY = 'aurasense_gradient_disabled';
+      const btn = document.createElement('button');
+      btn.id = 'gradientToggle';
+      btn.className = 'gradient-toggle';
+      btn.type = 'button';
+      btn.setAttribute('aria-pressed','false');
+      btn.setAttribute('aria-label','Toggle animated background');
+
+      function updateState(disabled){
+        document.body.classList.toggle('no-gradient', !!disabled);
+        btn.setAttribute('aria-pressed', String(!!disabled));
+        btn.title = disabled ? 'Enable animated background' : 'Disable animated background';
+        btn.textContent = disabled ? '✨ Off' : '✨ On';
+      }
+
+      btn.addEventListener('click', ()=>{
+        const was = localStorage.getItem(KEY) === 'true';
+        const now = !was;
+        localStorage.setItem(KEY, String(now));
+        updateState(now);
+        if(typeof announce === 'function') announce(now ? 'Animated background disabled' : 'Animated background enabled');
+      });
+
+      // initialize
+      const saved = localStorage.getItem(KEY) === 'true';
+      updateState(saved);
+      document.body.appendChild(btn);
+    }catch(e){/* ignore */}
+  })();
+
 })();
