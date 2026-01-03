@@ -154,4 +154,130 @@
       contactForm.reset();
     });
   }
+
+  // --- Emergency feature: call contact, share location, and support voice-trigger "I need help" ---
+  const EM_KEY = 'aura_emergency_contact';
+  const emergencyBtn = document.getElementById('emergencyBtn');
+  const emergencyModal = document.getElementById('emergencyModal');
+  const saveEmergencyBtn = document.getElementById('saveEmergencyBtn');
+  const closeEmergencyBtn = document.getElementById('closeEmergencyBtn');
+  const emergencyNameInput = document.getElementById('emergencyName');
+  const emergencyPhoneInput = document.getElementById('emergencyPhone');
+  const voiceToggle = document.getElementById('voiceToggle');
+
+  function loadEmergencyContact(){
+    try{ return JSON.parse(localStorage.getItem(EM_KEY)) || null }catch(e){ return null }
+  }
+  function saveEmergencyContact(c){ localStorage.setItem(EM_KEY, JSON.stringify(c)); }
+
+  function openModal(){
+    if(!emergencyModal) return;
+    const c = loadEmergencyContact();
+    emergencyNameInput.value = (c && c.name) ? c.name : '';
+    emergencyPhoneInput.value = (c && c.phone) ? c.phone : '';
+    emergencyModal.setAttribute('aria-hidden','false');
+    emergencyNameInput.focus();
+  }
+  function closeModal(){ if(!emergencyModal) return; emergencyModal.setAttribute('aria-hidden','true'); emergencyBtn.focus(); }
+
+  if(emergencyBtn){
+    emergencyBtn.addEventListener('click', async ()=>{
+      const contact = loadEmergencyContact();
+      if(!contact || !contact.phone){
+        announce('No emergency contact saved. Opening settings.');
+        openModal();
+        return;
+      }
+
+      announce('Triggering emergency: calling ' + (contact.name || contact.phone));
+
+      // Try to get location (with timeout)
+      function getLocation(timeout=8000){
+        return new Promise((resolve)=>{
+          if(!('geolocation' in navigator)){ return resolve(null); }
+          let done=false;
+          const timer = setTimeout(()=>{ if(!done){ done=true; resolve(null); } }, timeout);
+          navigator.geolocation.getCurrentPosition((pos)=>{
+            if(done) return; done=true; clearTimeout(timer);
+            resolve({latitude: pos.coords.latitude, longitude: pos.coords.longitude});
+          }, (err)=>{ if(done) return; done=true; clearTimeout(timer); resolve(null); }, {enableHighAccuracy:true,maximumAge:0,timeout:timeout});
+        });
+      }
+
+      const coords = await getLocation();
+      const locMsg = coords ? `https://maps.google.com/?q=${coords.latitude},${coords.longitude}` : 'Location not available';
+      const text = `Emergency! I need help. ${locMsg}`;
+
+      // Try Web Share if available (gives user option to send via installed apps)
+      if(navigator.share){
+        try{ await navigator.share({title:'Emergency',text:text,url: coords ? locMsg : undefined}); announce('Shared emergency details'); }catch(e){ /* user cancelled or not available */ }
+      }
+
+      // Try SMS first (pre-fill message), then attempt call
+      try{
+        const smsBody = encodeURIComponent(text);
+        // note: different platforms use different separators - most use ?body= but iOS uses & after number in some contexts
+        const smsLink = `sms:${contact.phone}?body=${smsBody}`;
+        // open SMS; this may navigate away on mobile
+        window.location.href = smsLink;
+      }catch(e){ console.error(e); }
+
+      // After a short delay, open tel: to call
+      setTimeout(()=>{ try{ window.location.href = `tel:${contact.phone}`; }catch(e){ console.error(e); } }, 1200);
+    });
+
+    // keyboard shortcut Alt+H for quick emergency
+    window.addEventListener('keydown', (e)=>{ if(e.altKey && e.key.toLowerCase() === 'h'){ e.preventDefault(); emergencyBtn.click(); } });
+  }
+
+  // Modal save/close handlers
+  if(saveEmergencyBtn){
+    saveEmergencyBtn.addEventListener('click', ()=>{
+      const name = emergencyNameInput.value.trim();
+      const phone = emergencyPhoneInput.value.trim();
+      if(!phone){ announce('Please enter a phone number'); emergencyPhoneInput.focus(); return; }
+      saveEmergencyContact({name, phone});
+      announce('Emergency contact saved: ' + (name || phone));
+      closeModal();
+    });
+  }
+  if(closeEmergencyBtn){ closeEmergencyBtn.addEventListener('click', ()=>{ closeModal(); }); }
+
+  // Close modal when clicking outside
+  if(emergencyModal){
+    emergencyModal.addEventListener('click', (ev)=>{ if(ev.target === emergencyModal){ closeModal(); } });
+  }
+
+  // Voice trigger: listen for phrase "I need help"
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+  let recognition = null; let listening = false;
+  if(SpeechRec){
+    recognition = new SpeechRec();
+    recognition.continuous = true;
+    recognition.interimResults = false;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (ev)=>{
+      const transcript = Array.from(ev.results).map(r=>r[0].transcript).join(' ').toLowerCase();
+      if(transcript.includes('i need help')){
+        announce('Voice trigger detected. Triggering emergency.');
+        emergencyBtn.click();
+      }
+    };
+    recognition.onstart = ()=>{ voiceToggle.setAttribute('aria-pressed','true'); announce('Voice detection enabled'); };
+    recognition.onend = ()=>{ voiceToggle.setAttribute('aria-pressed','false'); announce('Voice detection stopped'); if(listening){ /* attempt to restart */ try{ recognition.start(); }catch(e){} } };
+    recognition.onerror = (err)=>{ console.error('Speech recognition error', err); announce('Voice recognition error'); };
+  } else {
+    // If not supported, disable control
+    if(voiceToggle){ voiceToggle.setAttribute('aria-disabled','true'); voiceToggle.title = 'Speech recognition not supported'; }
+  }
+
+  if(voiceToggle){
+    voiceToggle.addEventListener('click', ()=>{
+      if(!recognition) { announce('Voice detection not supported in this browser'); return; }
+      listening = !listening;
+      if(listening){ try{ recognition.start(); }catch(e){ announce('Unable to start voice detection'); listening = false; voiceToggle.setAttribute('aria-pressed','false'); } } else { try{ recognition.stop(); }catch(e){} }
+    });
+  }
+
 })();

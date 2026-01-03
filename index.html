@@ -156,6 +156,29 @@
     </div>
   </footer>
 
+  <!-- Emergency floating button and settings modal -->
+  <button id="emergencyBtn" class="emergency-btn" aria-label="Emergency. Press to call your emergency contact." title="Emergency">🆘</button>
+
+  <button id="voiceToggle" class="voice-toggle" aria-pressed="false" aria-label="Voice detection. Toggle listening for 'I need help'">🎤</button>
+
+  <div id="emergencyModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="emergencyModalLabel">
+    <div class="modal-content">
+      <h4 id="emergencyModalLabel">Emergency contact</h4>
+      <p>Save the phone number that'll be called or messaged in an emergency.</p>
+      <label for="emergencyName">Name</label>
+      <input id="emergencyName" name="emergencyName" type="text" autocomplete="name" />
+      <label for="emergencyPhone">Phone</label>
+      <input id="emergencyPhone" name="emergencyPhone" type="tel" inputmode="tel" placeholder="+1234567890" />
+
+      <div class="modal-actions">
+        <button id="saveEmergencyBtn" class="cta">Save</button>
+        <button id="closeEmergencyBtn" class="cta ghost">Close</button>
+      </div>
+
+      <p class="hint">You can also say <strong>"I need help"</strong> to trigger the emergency action (enable voice detection first).</p>
+    </div>
+  </div>
+
   <script src="js/script.js"></script>
 </body>
 </html>
