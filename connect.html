@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Connect — AuraSense</title>
+  <meta name="description" content="Join community groups, request mentors, and find events for long-term support.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    try{
+      const path = window.location.pathname.split('/').pop();
+      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
+        window.location.replace('login.html');
+      }
+    }catch(e){/* ignore */}
+  </script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="AuraSense home">AuraSense</a>
+    </div>
+  </header>
+
+  <main class="container" role="main" tabindex="-1">
+    <section class="connect-hero" aria-labelledby="connect-heading">
+      <h1 id="connect-heading">Connect & Get Support</h1>
+      <p class="lead">Long-term support: join groups, get help from peers and mentors, attend workshops, and share experiences.</p>
+      <p class="hint">Use the buttons below to join groups or request mentorship.</p>
+    </section>
+
+    <section class="join" aria-labelledby="join-heading">
+      <h2 id="join-heading">Join community</h2>
+      <p>Get connected quickly — join our chat groups and Discord server to meet peers and mentors.</p>
+      <div class="join-buttons">
+        <a class="cta" href="#" id="joinWhatsapp">Join WhatsApp group</a>
+        <a class="cta" href="#" id="joinTelegram">Join Telegram</a>
+        <a class="cta" href="#" id="joinDiscord">Join Discord</a>
+      </div>
+    </section>
+
+    <section class="events" aria-labelledby="events-heading">
+      <h2 id="events-heading">Upcoming events</h2>
+      <div class="cards" id="eventsList">
+        <article class="card">
+          <h4>Intro to Screen Readers</h4>
+          <p>Date: 2026-02-12 • Online workshop</p>
+          <p><button class="cta register-event" data-event="intro-screenreaders">Register</button></p>
+        </article>
+
+        <article class="card">
+          <h4>Assistive Tech Fair (Local)</h4>
+          <p>Date: 2026-03-05 • City Hall</p>
+          <p><button class="cta register-event" data-event="assistive-fair">Register</button></p>
+        </article>
+
+        <article class="card">
+          <h4>Volunteer Orientation</h4>
+          <p>Date: 2026-01-28 • Online</p>
+          <p><button class="cta register-event" data-event="volunteer-orientation">Register</button></p>
+        </article>
+      </div>
+      <p class="hint" id="eventsMsg" aria-live="polite"></p>
+    </section>
+
+    <section class="mentor" aria-labelledby="mentor-heading">
+      <h2 id="mentor-heading">Request a mentor</h2>
+      <p>Fill the form below and we'll match you with a volunteer mentor.</p>
+      <form id="mentorForm" class="contact-form" aria-labelledby="mentor-heading">
+        <label for="mname">Your name</label>
+        <input id="mname" name="name" type="text" required>
+        <label for="memail">Email</label>
+        <input id="memail" name="email" type="email" required>
+        <label for="menteeLevel">Level</label>
+        <select id="menteeLevel" name="level">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+        <label for="mnotes">Notes (what help you need)</label>
+        <textarea id="mnotes" name="notes" rows="4"></textarea>
+        <button type="submit" class="cta">Request mentor</button>
+        <div id="mentorMsg" class="hint" aria-live="polite"></div>
+      </form>
+    </section>
+
+    <section aria-labelledby="share-heading">
+      <h2 id="share-heading">Share your experiences</h2>
+      <p>Record short audio testimonials or submit a written story to inspire others. We can help record audio if needed.</p>
+      <p><a class="cta ghost" href="#">Share a story</a></p>
+    </section>
+
+    <p class="hint">Result: Users join groups, find mentors, and attend events for ongoing support.</p>
+
+    <p><a class="cta ghost" href="index.html">Back to home</a></p>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; <span id="year"></span> AuraSense</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      // Event registration stored locally (demo)
+      function eventsKey(){ return 'aurasense_events_v1'; }
+      function loadEvents(){ try{ return JSON.parse(localStorage.getItem(eventsKey())||'{}'); }catch(e){return {}; } }
+      function saveEvents(data){ try{ localStorage.setItem(eventsKey(), JSON.stringify(data)); }catch(e){} }
+
+      const msg = document.getElementById('eventsMsg');
+      document.querySelectorAll('.register-event').forEach(btn=>btn.addEventListener('click', ()=>{
+        const id = btn.dataset.event;
+        const ev = loadEvents(); ev[id] = true; saveEvents(ev);
+        msg.textContent = 'Registered — we will email event details to you.';
+        setTimeout(()=>{ msg.textContent = ''; }, 4000);
+      }));
+
+      // Mentor request handling
+      const form = document.getElementById('mentorForm');
+      const mentorMsg = document.getElementById('mentorMsg');
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const data = {name: form.name.value.trim(), email: form.email.value.trim(), level: form.level.value, notes: form.notes.value.trim(), date: new Date().toISOString()};
+        if(!data.name || !data.email){ mentorMsg.textContent = 'Please fill in name and email'; return; }
+        // Save to localStorage as demo queue
+        try{ const q = JSON.parse(localStorage.getItem('aurasense_mentor_requests')||'[]'); q.push(data); localStorage.setItem('aurasense_mentor_requests', JSON.stringify(q)); }
+        catch(e){}
+        mentorMsg.textContent = 'Thanks — your mentor request was received. We will follow up by email.';
+        form.reset();
+        setTimeout(()=>{ mentorMsg.textContent=''; }, 6000);
+      });
+
+      // Join buttons open external links (placeholders)
+      document.getElementById('joinWhatsapp').addEventListener('click', function(e){ e.preventDefault(); window.open('https://chat.whatsapp.com/', '_blank'); });
+      document.getElementById('joinTelegram').addEventListener('click', function(e){ e.preventDefault(); window.open('https://telegram.org/', '_blank'); });
+      document.getElementById('joinDiscord').addEventListener('click', function(e){ e.preventDefault(); window.open('https://discord.com/', '_blank'); });
+
+    })();
+  </script>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

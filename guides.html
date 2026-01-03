@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Guides & Training — AuraSense</title>
+  <meta name="description" content="Guides and training to help people with visual impairments use technology confidently.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    try{
+      const path = window.location.pathname.split('/').pop();
+      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
+        window.location.replace('login.html');
+      }
+    }catch(e){/* ignore */}
+  </script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="AuraSense home">AuraSense</a>
+    </div>
+  </header>
+
+  <main id="main" class="container" role="main" tabindex="-1">
+    <section class="guides-hero" aria-labelledby="guides-heading">
+      <div class="container">
+        <h1 id="guides-heading">Guides & Training</h1>
+        <p class="lead">Purpose: Teach visually impaired users how to use technology confidently. Choose your level and preferred format.</p>
+        <p class="hint">Formats: text, audio, short demo videos, and accessible downloadable PDFs.</p>
+      </div>
+    </section>
+
+    <section class="guides-grid" aria-labelledby="levels-heading">
+      <h2 id="levels-heading">Step-by-step content</h2>
+
+      <div class="cards">
+        <article class="card">
+          <h4>Beginner Guides</h4>
+          <ul>
+            <li>How to use a screen reader (NVDA / TalkBack / VoiceOver)</li>
+            <li>Basic keyboard shortcuts for blind users</li>
+            <li>How to enable accessibility on Android / iPhone / Windows</li>
+          </ul>
+          <p><a class="cta ghost" href="#beginner-media">Explore beginner media</a></p>
+        </article>
+
+        <article class="card">
+          <h4>Medium-Level Tutorials</h4>
+          <ul>
+            <li>Using WhatsApp, Gmail, YouTube with screen readers</li>
+            <li>Online payments safely (UPI, banking apps)</li>
+            <li>Reading PDFs and documents with assistive tools</li>
+          </ul>
+          <p><a class="cta ghost" href="#intermediate-media">Explore medium tutorials</a></p>
+        </article>
+
+        <article class="card">
+          <h4>Advanced Training</h4>
+          <ul>
+            <li>Using AI tools for image description</li>
+            <li>Coding or studying with screen readers</li>
+            <li>Job-related digital skills</li>
+          </ul>
+          <p><a class="cta ghost" href="#advanced-media">Explore advanced resources</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="media" class="resources" aria-labelledby="media-heading">
+      <h2 id="media-heading">Formats & sample resources</h2>
+
+      <article id="beginner-media" class="card">
+        <h4>Beginner — sample materials</h4>
+        <p>Text: Short, plain-language guides.</p>
+        <p>Audio: Quick explanations and narrated walkthroughs.</p>
+        <p>Video: Short demo clips showing screen reader workflows.</p>
+        <p>Downloadable PDF: <a href="assets/guides/beginners.pdf" download aria-label="Download beginner guide (PDF)">Download beginner guide (PDF)</a></p>
+        <p>Sample audio:</p>
+        <audio controls>
+          <source src="assets/audio/beginners-intro.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </article>
+
+      <article id="intermediate-media" class="card">
+        <h4>Medium</h4>
+        <p>Detailed walkthroughs and demo videos focused on common apps and tasks.</p>
+        <p>Sample PDF: <a href="assets/guides/medium.pdf" download>Download</a></p>
+      </article>
+
+      <article id="advanced-media" class="card">
+        <h4>Advanced</h4>
+        <p>Guides on using AI, advanced workflows, and workplace-ready skills.</p>
+        <p>Sample PDF: <a href="assets/guides/advanced.pdf" download>Download</a></p>
+      </article>
+    </section>
+
+    <section aria-labelledby="howto-heading">
+      <h2 id="howto-heading">How to use these materials</h2>
+      <ol>
+        <li>Pick your level (Beginner / Medium / Advanced).</li>
+        <li>Choose a format — text, audio, or video.</li>
+        <li>Follow step-by-step; use the downloadable PDF for offline reference.</li>
+        <li>Contact <a href="mailto:hello@aurasense.org">hello@aurasense.org</a> if you need the material in another format.</li>
+      </ol>
+    </section>
+
+    <p class="hint">Result: Users can learn independently and confidently with clear, accessible content.</p>
+
+    <p><a class="cta ghost" href="index.html">Back to home</a></p>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; <span id="year"></span> AuraSense</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

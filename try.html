@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Try — AuraSense</title>
+  <meta name="description" content="Try recommended apps and practice real-life tasks with step-by-step guidance and demo videos.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    try{
+      const path = window.location.pathname.split('/').pop();
+      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
+        window.location.replace('login.html');
+      }
+    }catch(e){/* ignore */}
+  </script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="AuraSense home">AuraSense</a>
+    </div>
+  </header>
+
+  <main class="container" role="main" tabindex="-1">
+    <section class="try-hero" aria-labelledby="try-heading">
+      <h1 id="try-heading">Try</h1>
+      <p class="lead">Practical experience: explore apps, try demos, and practice real-life tasks.</p>
+      <p class="hint">Use the 'Try this app' buttons to visit app pages and follow the practice exercises below.</p>
+    </section>
+
+    <section class="try-cards" aria-labelledby="apps-heading">
+      <h2 id="apps-heading">Apps & Tools</h2>
+      <div class="cards">
+        <article class="card">
+          <h4>Seeing AI</h4>
+          <p>OCR and scene recognition; great for reading short text and identifying objects.</p>
+          <p><a class="cta" href="https://www.microsoft.com/en-us/ai/seeing-ai" target="_blank" rel="noopener">Try this app</a></p>
+        </article>
+
+        <article class="card">
+          <h4>NVDA</h4>
+          <p>Free desktop screen reader for Windows — recommended for many desktop users.</p>
+          <p><a class="cta" href="https://www.nvaccess.org/" target="_blank" rel="noopener">Try this app</a></p>
+        </article>
+
+        <article class="card">
+          <h4>TalkBack / VoiceOver</h4>
+          <p>Built-in mobile screen readers for Android and iOS; practice with helpful walkthroughs.</p>
+          <p><a class="cta" href="#" onclick="alert('Open your device settings to enable TalkBack/VoiceOver')">Try steps</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="practice" aria-labelledby="practice-heading" class="card">
+      <h2 id="practice-heading">Practice exercises</h2>
+      <p>Try these real-life tasks to build confidence. Your progress is saved locally.</p>
+      <ul id="exercises" class="exercise-list">
+        <li><label><input type="checkbox" data-id="e1"> Make a short voice note and send via WhatsApp</label></li>
+        <li><label><input type="checkbox" data-id="e2"> Read a short PDF using an OCR app</label></li>
+        <li><label><input type="checkbox" data-id="e3"> Navigate to a nearby place using a navigation app</label></li>
+      </ul>
+      <p class="hint" id="exerciseStatus">0 / 3 complete</p>
+      <p><button id="resetExercises" class="cta ghost">Reset exercises</button></p>
+    </section>
+
+    <section aria-labelledby="videos-heading">
+      <h2 id="videos-heading">Demo videos</h2>
+      <div class="cards">
+        <article class="card video-card">
+          <h4>Screen reader basics (short demo)</h4>
+          <div class="video-wrap" aria-hidden="true">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo video" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </article>
+
+        <article class="card video-card">
+          <h4>Using OCR apps in daily life</h4>
+          <div class="video-wrap" aria-hidden="true">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo video" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <p class="hint">Result: Practical practice helps users feel ready to use apps and tools confidently.</p>
+    <p><a class="cta ghost" href="index.html">Back to home</a></p>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; <span id="year"></span> AuraSense</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const exercises = document.getElementById('exercises');
+      const status = document.getElementById('exerciseStatus');
+      function key(){ return 'aurasense_exercises_v1'; }
+      function load(){ try{ return JSON.parse(localStorage.getItem(key())||'{}'); }catch(e){return {}; } }
+      function save(data){ try{ localStorage.setItem(key(), JSON.stringify(data)); }catch(e){}
+      }
+      function updateStatus(){ const total = exercises.querySelectorAll('input[type=checkbox]').length; const done = exercises.querySelectorAll('input[type=checkbox]:checked').length; status.textContent = done + ' / ' + total + ' complete'; }
+      // restore
+      const state = load(); exercises.querySelectorAll('input[type=checkbox]').forEach(cb=>{ const id = cb.dataset.id; if(state[id]) cb.checked=true; cb.addEventListener('change', ()=>{ state[id]=cb.checked; save(state); updateStatus(); }); });
+      document.getElementById('resetExercises').addEventListener('click', ()=>{ exercises.querySelectorAll('input[type=checkbox]').forEach(cb=>{ cb.checked=false; state[cb.dataset.id]=false; }); save(state); updateStatus(); });
+      updateStatus();
+    })();
+  </script>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Learn — AuraSense</title>
+  <meta name="description" content="Start learning — beginner to advanced accessible tutorials and progress tracking.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    try{
+      const path = window.location.pathname.split('/').pop();
+      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
+        window.location.replace('login.html');
+      }
+    }catch(e){/* ignore */}
+  </script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="AuraSense home">AuraSense</a>
+    </div>
+  </header>
+
+  <main class="container" role="main" tabindex="-1">
+    <section class="learn-hero" aria-labelledby="learn-heading">
+      <h1 id="learn-heading">Start Learning</h1>
+      <p class="lead">First steps for a new user: pick a level, start free tutorials, and track your progress.</p>
+      <p class="hint">Choose a learning path below and click <strong>Start Learning</strong> to begin a guided sequence.</p>
+      <p><button id="startLearning" class="cta">Start Learning</button></p>
+    </section>
+
+    <section class="paths" aria-labelledby="paths-heading">
+      <h2 id="paths-heading">Learning paths</h2>
+      <div class="cards">
+        <article class="card path-card" data-level="beginner">
+          <h4>Beginner</h4>
+          <p>Basics: screen readers, keyboard shortcuts, enabling accessibility.</p>
+          <div class="progress" aria-hidden="true">
+            <div class="progress-bar" style="--p:0%"></div>
+          </div>
+          <p><a class="cta ghost select-path" href="#" data-level="beginner">Select Beginner</a></p>
+        </article>
+
+        <article class="card path-card" data-level="intermediate">
+          <h4>Intermediate</h4>
+          <p>Apps with screen readers, online payments, PDFs.</p>
+          <div class="progress" aria-hidden="true">
+            <div class="progress-bar" style="--p:0%"></div>
+          </div>
+          <p><a class="cta ghost select-path" href="#" data-level="intermediate">Select Intermediate</a></p>
+        </article>
+
+        <article class="card path-card" data-level="advanced">
+          <h4>Advanced</h4>
+          <p>AI tools, coding with screen readers, job-skills.</p>
+          <div class="progress" aria-hidden="true">
+            <div class="progress-bar" style="--p:0%"></div>
+          </div>
+          <p><a class="cta ghost select-path" href="#" data-level="advanced">Select Advanced</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="pathDetail" class="path-detail" aria-labelledby="path-title" hidden>
+      <h2 id="path-title">Path name</h2>
+      <div id="pathProgressWrap">
+        <label for="progress">Progress</label>
+        <div class="progress" aria-hidden="true"><div id="pathProgress" class="progress-bar" style="--p:0%"></div></div>
+        <div id="progressText" class="hint">0% complete</div>
+      </div>
+
+      <ol id="modules" class="modules">
+      </ol>
+      <p><button id="resetPath" class="cta ghost">Reset progress</button></p>
+    </section>
+
+    <section aria-labelledby="howto-heading">
+      <h2 id="howto-heading">How it works</h2>
+      <ol>
+        <li>Choose your level and click Start Learning.</li>
+        <li>Work through short modules; mark them complete as you go.</li>
+        <li>Your progress is stored locally and shown as a percentage.</li>
+      </ol>
+    </section>
+
+    <p class="hint">Result: small, consistent steps help users build confidence.</p>
+    <p><a class="cta ghost" href="index.html">Back to home</a></p>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; <span id="year"></span> AuraSense</p>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      const MODULES = {
+        beginner: [
+          {id:'b1',title:'Intro to screen readers',desc:'Overview and what to expect.'},
+          {id:'b2',title:'Basic keyboard shortcuts',desc:'Learn essential shortcuts.'},
+          {id:'b3',title:'Enable accessibility on your device',desc:'Settings for Android/iOS/Windows.'}
+        ],
+        intermediate: [
+          {id:'m1',title:'WhatsApp & Gmail with screen readers',desc:'Messaging and email tips.'},
+          {id:'m2',title:'Online payments safely',desc:'UPI and banking app accessibility.'},
+          {id:'m3',title:'Reading PDFs with assistive tools',desc:'Best practices and apps.'}
+        ],
+        advanced: [
+          {id:'a1',title:'Using AI for image descriptions',desc:'Tools and workflows.'},
+          {id:'a2',title:'Coding with a screen reader',desc:'Editors and techniques.'},
+          {id:'a3',title:'Job-ready digital skills',desc:'Preparing for remote work.'}
+        ]
+      };
+
+      function storageKey(level){ return 'aurasense_progress_' + level; }
+
+      function getProgress(level){
+        try{ const v = JSON.parse(localStorage.getItem(storageKey(level)) || '[]'); return Array.isArray(v) ? v : []; }catch(e){return [];}
+      }
+      function setProgress(level, arr){ try{ localStorage.setItem(storageKey(level), JSON.stringify(arr)); }catch(e){}
+      }
+
+      function renderPathCardProgress(){
+        document.querySelectorAll('.path-card').forEach(card=>{
+          const level = card.dataset.level;
+          const completed = getProgress(level).length;
+          const total = MODULES[level].length;
+          const percent = Math.round(completed / total * 100) || 0;
+          const bar = card.querySelector('.progress-bar');
+          if(bar) bar.style.setProperty('--p', percent + '%');
+          const text = card.querySelector('.hint');
+          if(!text){
+            const e = document.createElement('div'); e.className='hint'; e.textContent = percent + '% complete'; card.appendChild(e);
+          } else { text.textContent = percent + '% complete'; }
+        });
+      }
+
+      function showPath(level){
+        const detail = document.getElementById('pathDetail');
+        const title = document.getElementById('path-title');
+        const modulesEl = document.getElementById('modules');
+        const progressBar = document.getElementById('pathProgress');
+        const progressText = document.getElementById('progressText');
+        detail.hidden = false;
+        title.textContent = level[0].toUpperCase()+level.slice(1) + ' path';
+        modulesEl.innerHTML = '';
+        const completed = new Set(getProgress(level));
+        MODULES[level].forEach(m=>{
+          const li = document.createElement('li');
+          li.innerHTML = `<div><strong>${m.title}</strong><p class="hint">${m.desc}</p></div>`;
+          const btn = document.createElement('button');
+          btn.className='cta ghost';
+          btn.textContent = completed.has(m.id) ? 'Completed' : 'Mark complete';
+          btn.setAttribute('aria-pressed', completed.has(m.id));
+          btn.addEventListener('click', ()=>{
+            const s = new Set(getProgress(level));
+            if(s.has(m.id)){ s.delete(m.id); btn.textContent='Mark complete'; btn.setAttribute('aria-pressed','false'); }
+            else { s.add(m.id); btn.textContent='Completed'; btn.setAttribute('aria-pressed','true'); }
+            setProgress(level, Array.from(s));
+            updatePathProgressUI(level);
+            renderPathCardProgress();
+          });
+          const wrapper = document.createElement('div'); wrapper.style.display='flex'; wrapper.style.justifyContent='space-between'; wrapper.style.alignItems='center'; wrapper.appendChild(li); wrapper.appendChild(btn);
+          modulesEl.appendChild(wrapper);
+        });
+        updatePathProgressUI(level);
+
+        document.getElementById('resetPath').onclick = function(){ setProgress(level, []); updatePathProgressUI(level); renderPathCardProgress(); };
+      }
+
+      function updatePathProgressUI(level){
+        const completed = getProgress(level).length;
+        const total = MODULES[level].length;
+        const percent = Math.round(completed / total * 100) || 0;
+        document.getElementById('pathProgress').style.setProperty('--p', percent + '%');
+        document.getElementById('progressText').textContent = percent + '% complete';
+      }
+
+      document.querySelectorAll('.select-path').forEach(a=>a.addEventListener('click', (e)=>{ e.preventDefault(); const level = a.dataset.level; showPath(level); }));
+      document.getElementById('startLearning').addEventListener('click', ()=>{ document.querySelector('.select-path').click(); });
+
+      // initial render
+      renderPathCardProgress();
+
+    })();
+  </script>
+</body>
+</html>

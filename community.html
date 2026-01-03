@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Community & Support — AuraSense</title>
+  <meta name="description" content="Community groups, volunteer programs, events, and success stories for people with visual impairments.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    try{
+      const path = window.location.pathname.split('/').pop();
+      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
+        window.location.replace('login.html');
+      }
+    }catch(e){/* ignore */}
+  </script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="AuraSense home">AuraSense</a>
+    </div>
+  </header>
+
+  <main class="container" role="main" tabindex="-1">
+    <section class="community-hero" aria-labelledby="community-heading">
+      <h1 id="community-heading">Community & Support</h1>
+      <p class="lead">Purpose: Reduce isolation & build confidence through people — peer groups, volunteers, local events, and shared stories.</p>
+    </section>
+
+    <section class="cards" aria-labelledby="peer-heading">
+      <h2 id="peer-heading">Peer Support Groups</h2>
+      <article class="card">
+        <h4>Join groups</h4>
+        <p>WhatsApp / Telegram groups, a community Discord server, and topic-based groups (students, job seekers, beginners).</p>
+        <p><a class="cta ghost" href="#join">How to join</a></p>
+      </article>
+
+      <article class="card">
+        <h4>Volunteer programs</h4>
+        <p>Sighted volunteers help blind users learn tech — mentors for students and helpers for setup guidance.</p>
+        <p><a class="cta ghost" href="#volunteer">Volunteer or request help</a></p>
+      </article>
+
+      <article class="card">
+        <h4>Local events</h4>
+        <p>Accessibility workshops, meetups, awareness programs and regular online webinars in our calendar.</p>
+        <p><a class="cta ghost" href="#events">View upcoming events</a></p>
+      </article>
+    </section>
+
+    <section id="user-stories" class="stories" aria-labelledby="stories-heading">
+      <h2 id="stories-heading">User stories & testimonials</h2>
+      <article class="testimonial">
+        <blockquote>“Because of AuraSense volunteers I learned to use a screen reader and now I work remotely — I feel confident.” <cite>— Arun</cite></blockquote>
+        <p>Listen to an audio testimonial:</p>
+        <audio controls>
+          <source src="assets/audio/arun-testimonial.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+      </article>
+
+      <article class="card">
+        <h4>Share your story</h4>
+        <p>Have a success story or a short interview you'd like to share? <a href="#share" class="cta ghost">Tell us</a> — we can record or publish your audio with permission.</p>
+      </article>
+    </section>
+
+    <section id="howto" aria-labelledby="help-heading">
+      <h2 id="help-heading">How to get involved</h2>
+      <ol>
+        <li>Pick a group or program that fits your interests (learning, mentoring, events).</li>
+        <li>Sign up using the contact form or email <a href="mailto:hello@aurasense.org">hello@aurasense.org</a>.</li>
+        <li>Attend a workshop or request a one-on-one mentor session.</li>
+        <li>Share your feedback so we can keep the community safe and welcoming.</li>
+      </ol>
+    </section>
+
+    <p class="hint">Result: Users feel supported, motivated, and connected.</p>
+
+    <p><a class="cta ghost" href="index.html">Back to home</a></p>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; <span id="year"></span> AuraSense</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

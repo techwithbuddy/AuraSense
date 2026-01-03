@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Assistive Tech — AuraSense</title>
+  <meta name="description" content="Assistive technology recommendations and comparisons for people with visual impairments.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>
+    try{
+      const path = window.location.pathname.split('/').pop();
+      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
+        window.location.replace('login.html');
+      }
+    }catch(e){/* ignore */}
+  </script>
+</head>
+<body>
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="logo" href="index.html" aria-label="AuraSense home">AuraSense</a>
+    </div>
+  </header>
+
+  <main class="container" role="main" tabindex="-1">
+    <section class="about-hero" aria-labelledby="assist-heading">
+      <div class="container">
+        <h1 id="assist-heading">Assistive Technology</h1>
+        <p class="lead">Purpose: Help users choose the right tools and devices for independent, confident use of technology.</p>
+        <p class="hint">We include clear explanations, who each tool suits, price info, pros & cons, and simple usage steps.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="apps-heading" class="cards">
+      <h2 id="apps-heading">Assistive Apps</h2>
+
+      <article class="card">
+        <h4>Screen readers (NVDA, JAWS, VoiceOver, TalkBack)</h4>
+        <p>What they do: Read the screen aloud and expose UI elements to keyboard users. Best for: Blind users who need full desktop or mobile access.</p>
+        <p>Formats: Free (NVDA, TalkBack, VoiceOver built-in), Paid (JAWS).</p>
+      </article>
+
+      <article class="card">
+        <h4>OCR apps (Seeing AI, Envision AI)</h4>
+        <p>What they do: Use the camera to recognize text, objects, and describe scenes. Best for: Low-vision users and blind people who need on-demand recognition.</p>
+        <p>Price: Free / Freemium depending on platform.</p>
+      </article>
+
+      <article class="card">
+        <h4>Navigation apps</h4>
+        <p>What they do: Provide turn-by-turn directions and points-of-interest specifically for blind users (e.g., Soundscape, BlindSquare).</p>
+      </article>
+
+      <article class="card">
+        <h4>Voice-to-text apps</h4>
+        <p>What they do: Convert speech to text for messaging and notes (e.g., Google Live Transcribe, built-in dictation).</p>
+      </article>
+    </section>
+
+    <section aria-labelledby="hardware-heading" class="cards">
+      <h2 id="hardware-heading">Hardware recommendations</h2>
+
+      <article class="card">
+        <h4>Braille displays</h4>
+        <p>What they do: Provide tactile reading via refreshable braille. Best for: Braille-literate users who prefer tactile output.</p>
+      </article>
+
+      <article class="card">
+        <h4>Talking watches & wearables</h4>
+        <p>What they do: Provide time, alerts, and simple notifications by voice or haptics. Best for: users needing quick context without opening a phone.</p>
+      </article>
+
+      <article class="card">
+        <h4>Smart canes & navigation hardware</h4>
+        <p>What they do: Offer obstacle detection and orientation assistance. Best for: independent mobility users in urban environments.</p>
+      </article>
+
+      <article class="card">
+        <h4>Headphones for navigation</h4>
+        <p>What they do: Deliver clear directional audio and spoken guidance; look for open-ear designs for environmental awareness.</p>
+      </article>
+    </section>
+
+    <section aria-labelledby="compare-heading" class="card">
+      <h2 id="compare-heading">Focused comparisons</h2>
+      <p>Read our head-to-head comparisons to help choose the right app:</p>
+      <ul>
+        <li><a href="nvda-vs-jaws.html" class="cta ghost">NVDA vs JAWS</a></li>
+        <li><a href="seeingai-vs-envision.html" class="cta ghost">Seeing AI vs Envision AI</a></li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="toolpage-heading">
+      <h2 id="toolpage-heading">Tool pages & details</h2>
+      <p>Each tool page includes: what the tool does, who it’s best for, price, pros & cons, and simple usage steps.</p>
+      <p>If you’d like, I can generate printable, accessible PDFs for each tool and add short sample videos and audio walkthroughs.</p>
+    </section>
+
+    <p class="hint">Result: Users save time & money by selecting the right tools for their needs.</p>
+
+    <p><a class="cta ghost" href="index.html">Back to home</a></p>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>&copy; <span id="year"></span> AuraSense</p>
+    </div>
+  </footer>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
