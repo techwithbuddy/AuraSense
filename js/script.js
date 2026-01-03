@@ -1,5 +1,14 @@
 // Accessibility & interaction helpers: nav toggle, TTS, font scaling, contrast, form
 (function(){
+  // Authentication: redirect visitors to login page until they sign in (front-end demo)
+  try{
+    const path = window.location.pathname.split('/').pop();
+    const isLogged = localStorage.getItem('aurasense_logged_in') === 'true';
+    if(!isLogged && path !== 'login.html'){
+      window.location.replace('login.html');
+    }
+  } catch(e){ /* ignore storage failures */ }
+
   const readBtn = document.getElementById('readBtn');
   const stopBtn = document.getElementById('stopReadBtn');
   const increaseBtn = document.getElementById('increaseFont');
@@ -11,6 +20,50 @@
   announcer.className = 'sr-only';
   announcer.setAttribute('aria-live','polite');
   document.body.appendChild(announcer);
+
+  // add a small logout button to header when signed in
+  function ensureAuthUI(){
+    try{
+      const logged = localStorage.getItem('aurasense_logged_in') === 'true';
+      const headerInner = document.querySelector('.header-inner');
+      const headerActions = document.querySelector('.header-actions');
+      if(!headerInner) return;
+
+      // logout button for signed-in users
+      let logoutBtn = document.getElementById('logoutBtn');
+      // sign-in link for signed-out users
+      let signInLink = document.getElementById('signinLink');
+
+      if(logged){
+        // ensure logout button exists
+        if(!logoutBtn){
+          logoutBtn = document.createElement('button');
+          logoutBtn.id = 'logoutBtn';
+          logoutBtn.className = 'cta ghost';
+          logoutBtn.textContent = 'Log out';
+          logoutBtn.addEventListener('click', ()=>{ localStorage.removeItem('aurasense_logged_in'); localStorage.removeItem('aurasense_user'); window.location.replace('login.html'); });
+          // append into header-actions if available for consistent layout
+          if(headerActions) headerActions.appendChild(logoutBtn); else headerInner.appendChild(logoutBtn);
+        }
+        // remove sign-in link if present
+        if(signInLink) signInLink.remove();
+      } else {
+        // remove logout button if present
+        if(logoutBtn) logoutBtn.remove();
+        // ensure sign-in link exists
+        if(!signInLink){
+          signInLink = document.createElement('a');
+          signInLink.id = 'signinLink';
+          signInLink.className = 'cta';
+          signInLink.href = 'login.html';
+          signInLink.setAttribute('aria-label','Sign in to AuraSense');
+          signInLink.textContent = 'Sign in';
+          if(headerActions) headerActions.appendChild(signInLink); else headerInner.appendChild(signInLink);
+        }
+      }
+    }catch(e){/* ignore */}
+  }
+  ensureAuthUI();
 
   const contactForm = document.getElementById('contactForm');
   const formMessage = document.getElementById('formMessage');

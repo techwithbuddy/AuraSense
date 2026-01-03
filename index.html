@@ -9,12 +9,38 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <script>
+    try{
+      const path = window.location.pathname.split('/').pop();
+      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
+        window.location.replace('login.html');
+      }
+    }catch(e){/* ignore */}
+  </script>
 </head>
 <body>
 
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a class="logo" href="#" aria-label="AuraSense home">AuraSense</a>
+      <a class="logo" href="about.html" aria-label="About AuraSense — learn more" title="About AuraSense — site details and specifications">
+        <svg class="eye-icon" width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true">
+          <defs>
+            <linearGradient id="irisG" x1="0" x2="1">
+              <stop offset="0%" stop-color="#00a896"/>
+              <stop offset="100%" stop-color="#0066cc"/>
+            </linearGradient>
+          </defs>
+          <title>AuraSense logo — eye for authentication</title>
+          <g fill="none" stroke="none">
+            <path d="M32 16C20 16 9.666 24.333 4 32c5.666 7.666 16 16 28 16s22.334-8.334 28-16C54.334 24.333 44 16 32 16z" fill="#eaf6fb"/>
+            <ellipse cx="32" cy="32" rx="10" ry="10" fill="url(#irisG)"/>
+            <circle class="eye-iris" cx="32" cy="32" r="5" fill="#041b3b"/>
+            <circle cx="26" cy="28" r="1.6" fill="rgba(255,255,255,0.7)"/>
+          </g>
+        </svg>
+        <span class="logo-text">AuraSense</span>
+        <span class="logo-badge" aria-hidden="true">🔒</span>
+      </a>
       <div class="header-actions">
         <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">☰</button>
       </div>
