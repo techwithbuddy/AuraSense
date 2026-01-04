@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,22 +9,26 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body class="login-page" style="background:transparent">
   <div id="react-background"></div>
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a class="logo" href="login.html" aria-label="AuraSense — login page">
-        <svg class="eye-icon" width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true">
+      <a class="logo" href="index.html" aria-label="AuraSense — login page">
+        <svg class="eye-icon" width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img"
+          focusable="false" aria-hidden="true">
           <defs>
             <linearGradient id="irisGlogin" x1="0" x2="1">
-              <stop offset="0%" stop-color="#00a896"/>
-              <stop offset="100%" stop-color="#0066cc"/>
+              <stop offset="0%" stop-color="#00a896" />
+              <stop offset="100%" stop-color="#0066cc" />
             </linearGradient>
           </defs>
           <g fill="none" stroke="none">
-            <path d="M32 16C20 16 9.666 24.333 4 32c5.666 7.666 16 16 28 16s22.334-8.334 28-16C54.334 24.333 44 16 32 16z" fill="#eaf6fb"/>
-            <ellipse cx="32" cy="32" rx="10" ry="10" fill="url(#irisGlogin)"/>
-            <circle cx="32" cy="32" r="5" fill="#041b3b"/>
+            <path
+              d="M32 16C20 16 9.666 24.333 4 32c5.666 7.666 16 16 28 16s22.334-8.334 28-16C54.334 24.333 44 16 32 16z"
+              fill="#eaf6fb" />
+            <ellipse cx="32" cy="32" rx="10" ry="10" fill="url(#irisGlogin)" />
+            <circle cx="32" cy="32" r="5" fill="#041b3b" />
           </g>
         </svg>
         <span class="logo-text">AuraSense</span>
@@ -40,16 +45,18 @@
               <svg width="72" height="72" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" focusable="false">
                 <defs>
                   <linearGradient id="lg-show" x1="0" x2="1">
-                    <stop offset="0%" stop-color="#00a896"/>
-                    <stop offset="100%" stop-color="#0066cc"/>
+                    <stop offset="0%" stop-color="#00a896" />
+                    <stop offset="100%" stop-color="#0066cc" />
                   </linearGradient>
                 </defs>
-                <rect rx="12" width="64" height="64" fill="url(#lg-show)" opacity="0.98"/>
+                <rect rx="12" width="64" height="64" fill="url(#lg-show)" opacity="0.98" />
                 <g transform="translate(6,6)" fill="none" stroke="none">
-                  <path d="M26 6C14 6 3.666 14.333 0 22c3.666 7.666 14 16 26 16s22.334-8.334 26-16C48.334 14.333 38 6 26 6z" fill="#eaf6fb"/>
-                  <ellipse cx="26" cy="26" rx="8" ry="8" fill="#fff" opacity="0.06"/>
-                  <ellipse cx="26" cy="26" rx="8" ry="8" fill="url(#lg-show)"/>
-                  <circle cx="26" cy="26" r="4" fill="#041b3b"/>
+                  <path
+                    d="M26 6C14 6 3.666 14.333 0 22c3.666 7.666 14 16 26 16s22.334-8.334 26-16C48.334 14.333 38 6 26 6z"
+                    fill="#eaf6fb" />
+                  <ellipse cx="26" cy="26" rx="8" ry="8" fill="#fff" opacity="0.06" />
+                  <ellipse cx="26" cy="26" rx="8" ry="8" fill="url(#lg-show)" />
+                  <circle cx="26" cy="26" r="4" fill="#041b3b" />
                 </g>
               </svg>
             </div>
@@ -60,16 +67,19 @@
             </div>
           </div>
         </div>
-        <p class="login-note">AuraSense focuses on accessible, privacy-respecting features for people with visual impairments. Signing in unlocks personalized help, saved tutorials, and workshop signups.</p>
+        <p class="login-note">AuraSense focuses on accessible, privacy-respecting features for people with visual
+          impairments. Signing in unlocks personalized help, saved tutorials, and workshop signups.</p>
       </div>
 
       <form id="loginForm" class="login-form" aria-labelledby="login-heading" novalidate>
         <label for="email">Email</label>
-        <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="emailHelp" aria-invalid="false">
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+          placeholder="Enter your email" required aria-describedby="emailHelp" aria-invalid="false">
         <div id="emailHelp" class="field-help" aria-live="polite"></div>
 
         <label for="password">Password <span id="pwdCounter" class="pwd-counter" aria-hidden="true">0 / 8</span></label>
-        <input id="password" name="password" type="password" maxlength="8" autocomplete="current-password" required aria-describedby="pwdHelp pwdCounter" aria-invalid="false">
+        <input id="password" name="password" type="password" maxlength="8" autocomplete="current-password"
+          placeholder="Enter your password" required aria-describedby="pwdHelp pwdCounter" aria-invalid="false">
         <ul id="pwdHelp" class="validation-list" aria-live="polite">
           <li id="pwd-letter" class="invalid"><span class="dot">✕</span>contains a letter</li>
           <li id="pwd-digit" class="invalid"><span class="dot">✕</span>contains a digit</li>
@@ -77,9 +87,11 @@
           <li id="pwd-length" class="invalid"><span class="dot">✕</span>8 characters or fewer</li>
         </ul>
 
-        <label for="emergency">Emergency contact (phone)</label>
-        <input id="emergency" name="emergency" type="tel" inputmode="tel" placeholder="+1 555 555 5555" required aria-describedby="emergencyHelp" aria-invalid="false">
-        <div id="emergencyHelp" class="field-help" aria-live="polite">We will use this number for SOS calls from the site.</div>
+        <label for="emergency">Emergency calls (phone)</label>
+        <input id="emergency" name="emergency" type="tel" inputmode="tel" placeholder="Enter emergency number" required
+          aria-describedby="emergencyHelp" aria-invalid="false">
+        <div id="emergencyHelp" class="field-help" aria-live="polite">We will use this number for SOS calls from the
+          site.</div>
 
         <div style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem;">
           <input id="remember" name="remember" type="checkbox">
@@ -99,7 +111,7 @@
 
   <script>
     // Simple front-end login handler (demo): stores a flag in localStorage and redirects back to home
-    (function(){
+    (function () {
       const form = document.getElementById('loginForm');
       const guest = document.getElementById('guest');
       const error = document.getElementById('loginError');
@@ -111,8 +123,8 @@
       const pwdCounter = document.getElementById('pwdCounter');
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      function validateEmail(v){ return emailRegex.test(v); }
-      function validatePassword(v){
+      function validateEmail(v) { return emailRegex.test(v); }
+      function validatePassword(v) {
         return {
           letter: /[A-Za-z]/.test(v),
           digit: /\d/.test(v),
@@ -121,66 +133,66 @@
         };
       }
 
-      function normalizePhone(s){ return (s||'').trim().replace(/[^+\d]/g,''); }
-      function validateEmergency(v){
+      function normalizePhone(s) { return (s || '').trim().replace(/[^+\d]/g, ''); }
+      function validateEmergency(v) {
         const norm = normalizePhone(v);
         // require at least 7 digits (common for local numbers)
-        const digits = norm.replace(/\D/g,'');
+        const digits = norm.replace(/\D/g, '');
         return digits.length >= 7;
       }
 
-      function updateEmailUI(){
+      function updateEmailUI() {
         const v = email.value.trim();
         const help = document.getElementById('emailHelp');
-        if(!v){ help.textContent = ''; email.classList.remove('input-error'); email.setAttribute('aria-invalid','false'); return; }
-        if(!validateEmail(v)){
+        if (!v) { help.textContent = ''; email.classList.remove('input-error'); email.setAttribute('aria-invalid', 'false'); return; }
+        if (!validateEmail(v)) {
           help.textContent = 'Please enter a valid email like abc@gmail.com';
           email.classList.add('input-error');
-          email.setAttribute('aria-invalid','true');
+          email.setAttribute('aria-invalid', 'true');
         } else {
           help.textContent = '';
           email.classList.remove('input-error');
-          email.setAttribute('aria-invalid','false');
+          email.setAttribute('aria-invalid', 'false');
         }
       }
 
-      function updateEmergencyUI(){
-        if(!emergency) return true;
+      function updateEmergencyUI() {
+        if (!emergency) return true;
         const v = emergency.value.trim();
-        if(!v){ emergencyHelp.textContent = 'We will use this number for SOS calls from the site.'; emergency.classList.remove('input-error'); emergency.setAttribute('aria-invalid','false'); return false; }
-        if(!validateEmergency(v)){
+        if (!v) { emergencyHelp.textContent = 'We will use this number for SOS calls from the site.'; emergency.classList.remove('input-error'); emergency.setAttribute('aria-invalid', 'false'); return false; }
+        if (!validateEmergency(v)) {
           emergencyHelp.textContent = 'Please enter a valid phone number with at least 7 digits.';
-          emergency.classList.add('input-error'); emergency.setAttribute('aria-invalid','true'); return false;
+          emergency.classList.add('input-error'); emergency.setAttribute('aria-invalid', 'true'); return false;
         }
-        emergencyHelp.textContent = 'Number looks good.'; emergency.classList.remove('input-error'); emergency.setAttribute('aria-invalid','false'); return true;
+        emergencyHelp.textContent = 'Number looks good.'; emergency.classList.remove('input-error'); emergency.setAttribute('aria-invalid', 'false'); return true;
       }
 
-      function updatePwdUI(){
+      function updatePwdUI() {
         const v = pwd.value;
         const res = validatePassword(v);
-        const map = {letter:'pwd-letter',digit:'pwd-digit',special:'pwd-special',length:'pwd-length'};
-        let all=true;
-        Object.keys(map).forEach(k=>{
+        const map = { letter: 'pwd-letter', digit: 'pwd-digit', special: 'pwd-special', length: 'pwd-length' };
+        let all = true;
+        Object.keys(map).forEach(k => {
           const el = document.getElementById(map[k]);
-          if(res[k]){ el.classList.remove('invalid'); el.classList.add('valid'); el.querySelector('.dot').textContent = '✓'; }
-          else { el.classList.remove('valid'); el.classList.add('invalid'); el.querySelector('.dot').textContent = '✕'; all=false; }
+          if (res[k]) { el.classList.remove('invalid'); el.classList.add('valid'); el.querySelector('.dot').textContent = '✓'; }
+          else { el.classList.remove('valid'); el.classList.add('invalid'); el.querySelector('.dot').textContent = '✕'; all = false; }
         });
         // live character counter
-        if(pwdCounter){ pwdCounter.textContent = v.length + ' / 8'; }
+        if (pwdCounter) { pwdCounter.textContent = v.length + ' / 8'; }
         // mark field error state
-        if(!all){ pwd.classList.add('input-error'); pwd.setAttribute('aria-invalid','true'); }
-        else { pwd.classList.remove('input-error'); pwd.setAttribute('aria-invalid','false'); }
+        if (!all) { pwd.classList.add('input-error'); pwd.setAttribute('aria-invalid', 'true'); }
+        else { pwd.classList.remove('input-error'); pwd.setAttribute('aria-invalid', 'false'); }
         // enable submit only when email valid, pwd all good, and emergency valid
         const emailOk = validateEmail(email.value.trim());
         const emergencyOk = updateEmergencyUI();
         submit.disabled = !(emailOk && all && emergencyOk);
       }
 
-      email.addEventListener('input', ()=>{ updateEmailUI(); updatePwdUI(); error.textContent = ''; });
-      pwd.addEventListener('input', ()=>{ updatePwdUI(); error.textContent = ''; });
-      emergency && emergency.addEventListener('input', ()=>{ updateEmergencyUI(); updatePwdUI(); error.textContent = ''; });
+      email.addEventListener('input', () => { updateEmailUI(); updatePwdUI(); error.textContent = ''; });
+      pwd.addEventListener('input', () => { updatePwdUI(); error.textContent = ''; });
+      emergency && emergency.addEventListener('input', () => { updateEmergencyUI(); updatePwdUI(); error.textContent = ''; });
 
-      form.addEventListener('submit', function(e){
+      form.addEventListener('submit', function (e) {
         e.preventDefault();
         const emailVal = email.value.trim();
         const passVal = pwd.value || '';
@@ -190,36 +202,36 @@
         const pwdRes = validatePassword(passVal);
         const pwdAll = pwdRes.letter && pwdRes.digit && pwdRes.special && pwdRes.length;
         const emergOk = validateEmergency(emergVal);
-        if(!emailOk || !pwdAll || !emergOk){
+        if (!emailOk || !pwdAll || !emergOk) {
           error.textContent = 'Please provide a valid email, a password that meets all requirements, and an emergency contact.';
           // focus first invalid
-          if(!emailOk) email.focus(); else if(!pwdAll) pwd.focus(); else emergency.focus();
+          if (!emailOk) email.focus(); else if (!pwdAll) pwd.focus(); else emergency.focus();
           return;
         }
         // NOTE: This is a demo placeholder. Replace with real authentication for production.
-        try{
+        try {
           localStorage.setItem('aurasense_logged_in', 'true');
           localStorage.setItem('aurasense_emergency', normalizePhone(emergVal));
-          if(remember){ localStorage.setItem('aurasense_user', emailVal); }
-        } catch(e){ /* ignore storage failure */ }
-        window.location.replace('index.html');
+          if (remember) { localStorage.setItem('aurasense_user', emailVal); }
+        } catch (e) { /* ignore storage failure */ }
+        window.location.replace('home.html');
       });
 
-      guest.addEventListener('click', function(){
+      guest.addEventListener('click', function () {
         // for guests, if a number is present in the form and valid, save it before continuing
-        try{
+        try {
           const val = emergency ? emergency.value.trim() : '';
-          if(val && validateEmergency(val)) localStorage.setItem('aurasense_emergency', normalizePhone(val));
-        }catch(e){}
+          if (val && validateEmergency(val)) localStorage.setItem('aurasense_emergency', normalizePhone(val));
+        } catch (e) { }
         localStorage.setItem('aurasense_logged_in', 'true');
-        window.location.replace('index.html');
+        window.location.replace('home.html');
       });
 
       // If already logged in, skip to home
-      try{ if(localStorage.getItem('aurasense_logged_in') === 'true') window.location.replace('index.html'); }catch(e){}
+      try { if (localStorage.getItem('aurasense_logged_in') === 'true') window.location.replace('home.html'); } catch (e) { }
 
       // pre-fill emergency if we have it saved
-      try{ const saved = localStorage.getItem('aurasense_emergency'); if(saved && emergency){ emergency.value = saved; } }catch(e){}
+      try { const saved = localStorage.getItem('aurasense_emergency'); if (saved && emergency) { emergency.value = saved; } } catch (e) { }
 
       // initial UI update
       updateEmailUI(); updatePwdUI(); updateEmergencyUI();
@@ -288,4 +300,5 @@
     root.render(<LoginBackground />);
   </script>
 </body>
+
 </html>

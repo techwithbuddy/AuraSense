@@ -1,246 +1,276 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>AuraSense — Accessibility for people with visual impairments</title>
-  <meta name="description" content="AuraSense helps blind people and those with eye conditions access resources, training, and assistive technology.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-  <script>
-    try{
-      const path = window.location.pathname.split('/').pop();
-      if(localStorage.getItem('aurasense_logged_in') !== 'true' && (path !== 'index.html' && path !== '')){
-        window.location.replace('index.html');
-      }
-    }catch(e){/* ignore */}
-  </script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AuraSense — Accessibility for people with visual impairments</title>
+    <meta name="description"
+        content="AuraSense helps blind people and those with eye conditions access resources, training, and assistive technology.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script>
+        try {
+            const path = window.location.pathname.split('/').pop();
+            if (localStorage.getItem('aurasense_logged_in') !== 'true' && (path !== 'index.html' && path !== '')) {
+                window.location.replace('index.html');
+            }
+        } catch (e) {/* ignore */ }
+    </script>
 </head>
+
 <body>
 
-  <header class="site-header" role="banner">
-    <div class="container header-inner">
-      <a class="logo" href="about.html" aria-label="About AuraSense — learn more" title="About AuraSense — site details and specifications">
-        <svg class="eye-icon" width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true">
-          <defs>
-            <linearGradient id="irisG" x1="0" x2="1">
-              <stop offset="0%" stop-color="#00a896"/>
-              <stop offset="100%" stop-color="#0066cc"/>
-            </linearGradient>
-          </defs>
-          <title>AuraSense logo — eye for authentication</title>
-          <g fill="none" stroke="none">
-            <path d="M32 16C20 16 9.666 24.333 4 32c5.666 7.666 16 16 28 16s22.334-8.334 28-16C54.334 24.333 44 16 32 16z" fill="#eaf6fb"/>
-            <ellipse cx="32" cy="32" rx="10" ry="10" fill="url(#irisG)"/>
-            <circle class="eye-iris" cx="32" cy="32" r="5" fill="#041b3b"/>
-            <circle cx="26" cy="28" r="1.6" fill="rgba(255,255,255,0.7)"/>
-          </g>
-        </svg>
-        <span class="logo-text">AuraSense</span>
-        <span class="logo-badge" aria-hidden="true">🔒</span>
-      </a>
-      <div class="header-actions">
-        <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Open menu">☰</button>
-      </div>
-      <nav id="main-nav" class="main-nav nav-bar" role="navigation" aria-label="Main navigation" hidden>
-        <div class="nav-inner">
-          <ul class="nav nav-horizontal" role="menubar" aria-label="Primary">
-            <li role="none"><a role="menuitem" href="home.html" aria-current="page">Home</a></li>
-            <li role="none"><a role="menuitem" href="#assistive-demo">Assistive demo</a></li>
-            <li role="none"><a role="menuitem" href="#how-it-works">How it works</a></li>
-            <li role="none"><a role="menuitem" href="#get-involved">Get involved</a></li>
-          </ul>
-          <div class="nav-underline" aria-hidden="true"></div>
-        </div>
-      </nav>
-    </div>
-  </header>
-
-  <main id="main" role="main" tabindex="-1">
-    <section class="hero" aria-labelledby="hero-heading">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <h2 id="hero-heading">Making the world accessible for people with visual impairments</h2>
-          <p id="intro">AuraSense provides resources, training, assistive-technology guidance, and community support for blind people and people with eye defects.</p>
-
-          <div class="hero-cta">
-            <a class="cta" href="#get-involved">Get started</a>
-            <a class="cta ghost" href="#assistive-demo">Learn more</a>
-          </div>
-
-          <div class="controls" role="region" aria-label="Accessibility controls">
-            <button id="readBtn" class="control">🔊 Read aloud</button>
-            <button id="stopReadBtn" class="control">⏹ Stop</button>
-            <button id="increaseFont" class="control">A+</button>
-            <button id="decreaseFont" class="control">A−</button>
-          </div>
-
-          <p class="hint">Keyboard shortcuts: <kbd>Alt</kbd> + <kbd>R</kbd> read, <kbd>Alt</kbd> + <kbd>+</kbd>/<kbd>-</kbd> font size</p>
-        </div>
-
-        <div class="hero-visual" aria-hidden="true">
-          <!-- simple decorative svg -->
-          <svg width="320" height="220" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true">
-            <defs>
-              <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="#0066cc"/>
-                <stop offset="100%" stop-color="#00a896"/>
-              </linearGradient>
-            </defs>
-            <rect rx="18" width="320" height="220" fill="url(#g)"/>
-            <g fill="#fff" opacity="0.9">
-              <circle cx="60" cy="80" r="22"/>
-              <rect x="120" y="60" width="140" height="30" rx="6"/>
-              <rect x="120" y="110" width="140" height="30" rx="6"/>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <section id="assistive-demo" class="features" aria-labelledby="assistive-demo-heading">
-      <div class="container">
-        <h3 id="assistive-demo-heading">Assistive demo</h3> 
-        <div class="cards">
-          <article class="card">
-            <a class="card-link" href="guides.html" aria-label="Guides and training — open guide page">
-              <h4>Guides & Training</h4>
-              <p>Step-by-step tutorials for using screen readers, magnifiers, and accessible mobile features.</p>
+    <header class="site-header" role="banner">
+        <div class="container header-inner">
+            <a class="logo" href="about.html" aria-label="About AuraSense — learn more"
+                title="About AuraSense — site details and specifications">
+                <svg class="eye-icon" width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg"
+                    role="img" focusable="false" aria-hidden="true">
+                    <defs>
+                        <linearGradient id="irisG" x1="0" x2="1">
+                            <stop offset="0%" stop-color="#00a896" />
+                            <stop offset="100%" stop-color="#0066cc" />
+                        </linearGradient>
+                    </defs>
+                    <title>AuraSense logo — eye for authentication</title>
+                    <g fill="none" stroke="none">
+                        <path
+                            d="M32 16C20 16 9.666 24.333 4 32c5.666 7.666 16 16 28 16s22.334-8.334 28-16C54.334 24.333 44 16 32 16z"
+                            fill="#eaf6fb" />
+                        <ellipse cx="32" cy="32" rx="10" ry="10" fill="url(#irisG)" />
+                        <circle class="eye-iris" cx="32" cy="32" r="5" fill="#041b3b" />
+                        <circle cx="26" cy="28" r="1.6" fill="rgba(255,255,255,0.7)" />
+                    </g>
+                </svg>
+                <span class="logo-text">AuraSense</span>
+                <span class="logo-badge" aria-hidden="true">🔒</span>
             </a>
-          </article>
-          <article class="card">
-            <h4>AI voice-guided navigation</h4>
-            <p>Start conversational voice assistance and issue commands aloud — for example, say <em>“Read the page”</em> or <em>“Increase font”</em>.</p>
-            <div class="card-actions">
-              <button id="startAssistant" class="control assistant-btn" aria-pressed="false">Start assistant</button>
+            <div class="header-actions">
+                <button id="navToggle" class="nav-toggle" aria-expanded="false" aria-controls="main-nav"
+                    aria-label="Open menu">☰</button>
             </div>
-          </article>
-          <article class="card">
-            <h4>High-contrast preview</h4>
-            <p>Try a high-contrast theme to see how the site appears to users who need stronger contrast.</p>
-            <div class="card-actions">
-              <button id="contrastDemoBtn" class="control contrast-btn" aria-pressed="false">Toggle high contrast</button>
+            <nav id="main-nav" class="main-nav nav-bar" role="navigation" aria-label="Main navigation" hidden>
+                <div class="nav-inner">
+                    <ul class="nav nav-horizontal" role="menubar" aria-label="Primary">
+                        <li role="none"><a role="menuitem" href="home.html" aria-current="page">Home</a></li>
+                        <li role="none"><a role="menuitem" href="#assistive-demo">Assistive demo</a></li>
+                        <li role="none"><a role="menuitem" href="#how-it-works">How it works</a></li>
+                        <li role="none"><a role="menuitem" href="#get-involved">Get involved</a></li>
+                    </ul>
+                    <div class="nav-underline" aria-hidden="true"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main" role="main" tabindex="-1">
+        <section class="hero" aria-labelledby="hero-heading">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <h2 id="hero-heading">Making the world accessible for people with visual impairments</h2>
+                    <p id="intro">AuraSense provides resources, training, assistive-technology guidance, and community
+                        support for blind people and people with eye defects.</p>
+
+                    <div class="hero-cta">
+                        <a class="cta" href="#get-involved">Get started</a>
+                        <a class="cta ghost" href="#assistive-demo">Learn more</a>
+                    </div>
+
+                    <div class="controls" role="region" aria-label="Accessibility controls">
+                        <button id="readBtn" class="control">🔊 Read aloud</button>
+                        <button id="stopReadBtn" class="control">⏹ Stop</button>
+                        <button id="increaseFont" class="control">A+</button>
+                        <button id="decreaseFont" class="control">A−</button>
+                    </div>
+
+                    <p class="hint">Keyboard shortcuts: <kbd>Alt</kbd> + <kbd>R</kbd> read, <kbd>Alt</kbd> +
+                        <kbd>+</kbd>/<kbd>-</kbd> font size</p>
+                </div>
+
+                <div class="hero-visual" aria-hidden="true">
+                    <!-- simple decorative svg -->
+                    <svg width="320" height="220" viewBox="0 0 320 220" xmlns="http://www.w3.org/2000/svg" role="img"
+                        focusable="false" aria-hidden="true">
+                        <defs>
+                            <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+                                <stop offset="0%" stop-color="#0066cc" />
+                                <stop offset="100%" stop-color="#00a896" />
+                            </linearGradient>
+                        </defs>
+                        <rect rx="18" width="320" height="220" fill="url(#g)" />
+                        <g fill="#fff" opacity="0.9">
+                            <circle cx="60" cy="80" r="22" />
+                            <rect x="120" y="60" width="140" height="30" rx="6" />
+                            <rect x="120" y="110" width="140" height="30" rx="6" />
+                        </g>
+                    </svg>
+                </div>
             </div>
-          </article>
+        </section>
 
-          <article class="card">
-            <h4>AI image description</h4>
-            <p>Upload an image and the assistant will describe it in simple, spoken language.</p>
-            <div class="image-desc">
-              <label for="imageInput" class="sr-only">Upload image for description</label>
-              <input id="imageInput" type="file" accept="image/*" aria-describedby="imageDescText" />
-              <div id="imagePreview" class="image-preview" aria-hidden="true"></div>
-              <div class="card-actions">
-                <button id="describeBtn" class="control">Describe</button>
-                <button id="speakDescBtn" class="control" disabled>Speak</button>
-              </div>
-              <div id="imageDescText" class="sr-only" aria-live="polite"></div>
+        <section id="assistive-demo" class="features" aria-labelledby="assistive-demo-heading">
+            <div class="container">
+                <h3 id="assistive-demo-heading">Assistive demo</h3>
+                <div class="cards">
+                    <article class="card">
+                        <a class="card-link" href="guides.html" aria-label="Guides and training — open guide page">
+                            <h4>Guides & Training</h4>
+                            <p>Step-by-step tutorials for using screen readers, magnifiers, and accessible mobile
+                                features.</p>
+                        </a>
+                    </article>
+                    <article class="card">
+                        <h4>AI voice-guided navigation</h4>
+                        <p>Start conversational voice assistance and issue commands aloud — for example, say <em>“Read
+                                the page”</em> or <em>“Increase font”</em>.</p>
+                        <div class="card-actions">
+                            <button id="startAssistant" class="control assistant-btn" aria-pressed="false">Start
+                                assistant</button>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <h4>High-contrast preview</h4>
+                        <p>Try a high-contrast theme to see how the site appears to users who need stronger contrast.
+                        </p>
+                        <div class="card-actions">
+                            <button id="contrastDemoBtn" class="control contrast-btn" aria-pressed="false">Toggle high
+                                contrast</button>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <h4>AI image description</h4>
+                        <p>Upload an image and the assistant will describe it in simple, spoken language.</p>
+                        <div class="image-desc">
+                            <label for="imageInput" class="sr-only">Upload image for description</label>
+                            <input id="imageInput" type="file" accept="image/*" aria-describedby="imageDescText" />
+                            <div id="imagePreview" class="image-preview" aria-hidden="true"></div>
+                            <div class="card-actions">
+                                <button id="describeBtn" class="control">Describe</button>
+                                <button id="speakDescBtn" class="control" disabled>Speak</button>
+                            </div>
+                            <div id="imageDescText" class="sr-only" aria-live="polite"></div>
+                        </div>
+                        <p class="hint">Photos are not uploaded anywhere by default; the demo will attempt a local
+                            heuristic unless a backend endpoint is provided at <code>/api/describe</code>.</p>
+                    </article>
+
+                    <article class="card">
+                        <a class="card-link" href="http://localhost:8501" target="_blank" rel="noopener"
+                            aria-label="Launch Voice Vision — opens AI tool in a new tab">
+                            <h4>Launch Voice Vision</h4>
+                            <p>Explore our AI tool that describes your surroundings in real-time using your camera.</p>
+                        </a>
+                    </article>
+                    <article class="card">
+                        <a class="card-link" href="cam.html" aria-label="camera detection tool for accessibility">
+                            <h4>Camera Access</h4>
+                            <p>Use your device camera for accessibility features.</p>
+                        </a>
+                    </article>
+                </div>
             </div>
-            <p class="hint">Photos are not uploaded anywhere by default; the demo will attempt a local heuristic unless a backend endpoint is provided at <code>/api/describe</code>.</p>
-          </article>
+        </section>
 
-          <article class="card">
-            <a class="card-link" href="cam.html" aria-label="camera detection tool for accessibility">
-              <h4>Camera Access</h4>
-              <p>Use your device camera for accessibility features.</p>
-            </a>
-          </article>
+        <section id="how-it-works" class="how" aria-labelledby="how-heading">
+            <div class="container">
+                <h3 id="how-heading">How it works</h3>
+                <div class="cards">
+                    <article class="card">
+                        <a class="card-link" href="learn.html" aria-label="Learn — tutorials and training">
+                            <h4>Learn</h4>
+                            <p>Free, accessible tutorials and workshops to build confidence with assistive tools.</p>
+                        </a>
+                    </article>
+                    <article class="card">
+                        <a class="card-link" href="try.html" aria-label="Try — hands-on sessions and demo apps">
+                            <h4>Try</h4>
+                            <p>Hands-on sessions and recommended apps you can try today.</p>
+                        </a>
+                    </article>
+                    <article class="card">
+                        <a class="card-link" href="connect.html" aria-label="Connect — community groups and mentors">
+                            <h4>Connect</h4>
+                            <p>Find local support groups and mentors.</p>
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials" aria-labelledby="testimonials-heading">
+            <div class="container">
+                <h3 id="testimonials-heading">Success stories</h3>
+                <blockquote class="testimonial">“AuraSense helped me learn screen reader shortcuts — now I feel
+                    independent.” <cite>— Maya</cite></blockquote>
+            </div>
+        </section>
+
+        <section id="get-involved" class="get-involved" aria-labelledby="involved-heading">
+            <div class="container">
+                <h3 id="involved-heading">Get involved</h3>
+                <p>Volunteer, donate, or join our workshops. Everyone is welcome.</p>
+
+                <div class="get-grid">
+                    <div>
+                        <p><a class="cta" href="#contact">Join a workshop</a></p>
+                        <p><a class="cta ghost" href="#how-it-works">Learn how to help</a></p>
+                    </div>
+
+                    <form id="contactForm" class="contact-form" aria-labelledby="contact-form-heading">
+                        <h4 id="contact-form-heading">Contact us</h4>
+                        <label for="name">Name</label>
+                        <input id="name" name="name" type="text" required>
+                        <label for="email">Email</label>
+                        <input id="email" name="email" type="email" required>
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+                        <button type="submit" class="cta">Send message</button>
+                        <div id="formMessage" class="sr-only" aria-live="polite"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" role="contentinfo">
+        <div class="container">
+            <p>Contact: <a href="mailto:hello@aurasense.org">hello@aurasense.org</a></p>
+            <p>&copy; <span id="year"></span> AuraSense</p>
         </div>
-      </div>
-    </section>
+    </footer>
 
-    <section id="how-it-works" class="how" aria-labelledby="how-heading">
-      <div class="container">
-        <h3 id="how-heading">How it works</h3>
-        <div class="cards">
-          <article class="card">
-            <a class="card-link" href="learn.html" aria-label="Learn — tutorials and training">
-              <h4>Learn</h4>
-              <p>Free, accessible tutorials and workshops to build confidence with assistive tools.</p>
-            </a>
-          </article>
-          <article class="card">
-            <a class="card-link" href="try.html" aria-label="Try — hands-on sessions and demo apps">
-              <h4>Try</h4>
-              <p>Hands-on sessions and recommended apps you can try today.</p>
-            </a>
-          </article>
-          <article class="card">
-            <a class="card-link" href="connect.html" aria-label="Connect — community groups and mentors">
-              <h4>Connect</h4>
-              <p>Find local support groups and mentors.</p>
-            </a>
-          </article>
+    <!-- Emergency floating button and settings modal -->
+    <button id="emergencyBtn" class="emergency-btn" aria-label="Emergency. Press to call your emergency contact."
+        title="Emergency">🆘</button>
+
+    <button id="voiceToggle" class="voice-toggle" aria-pressed="false"
+        aria-label="Voice detection. Toggle listening for 'I need help'">🎤</button>
+
+    <div id="emergencyModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true"
+        aria-labelledby="emergencyModalLabel">
+        <div class="modal-content">
+            <h4 id="emergencyModalLabel">Emergency contact</h4>
+            <p>Save the phone number that'll be called or messaged in an emergency.</p>
+            <label for="emergencyName">Name</label>
+            <input id="emergencyName" name="emergencyName" type="text" autocomplete="name" />
+            <label for="emergencyPhone">Phone</label>
+            <input id="emergencyPhone" name="emergencyPhone" type="tel" inputmode="tel" placeholder="+1234567890" />
+
+            <div class="modal-actions">
+                <button id="saveEmergencyBtn" class="cta">Save</button>
+                <button id="closeEmergencyBtn" class="cta ghost">Close</button>
+            </div>
+
+            <p class="hint">You can also say <strong>"I need help"</strong> to trigger the emergency action (enable
+                voice detection first).</p>
         </div>
-      </div>
-    </section>
-
-    <section class="testimonials" aria-labelledby="testimonials-heading">
-      <div class="container">
-        <h3 id="testimonials-heading">Success stories</h3>
-        <blockquote class="testimonial">“AuraSense helped me learn screen reader shortcuts — now I feel independent.” <cite>— Maya</cite></blockquote>
-      </div>
-    </section>
-
-    <section id="get-involved" class="get-involved" aria-labelledby="involved-heading">
-      <div class="container">
-        <h3 id="involved-heading">Get involved</h3>
-        <p>Volunteer, donate, or join our workshops. Everyone is welcome.</p>
-
-        <div class="get-grid">
-          <div>
-            <p><a class="cta" href="#contact">Join a workshop</a></p>
-            <p><a class="cta ghost" href="#how-it-works">Learn how to help</a></p>
-          </div>
-
-          <form id="contactForm" class="contact-form" aria-labelledby="contact-form-heading">
-            <h4 id="contact-form-heading">Contact us</h4>
-            <label for="name">Name</label>
-            <input id="name" name="name" type="text" required>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email" required>
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-            <button type="submit" class="cta">Send message</button>
-            <div id="formMessage" class="sr-only" aria-live="polite"></div>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer id="contact" role="contentinfo">
-    <div class="container">
-      <p>Contact: <a href="mailto:hello@aurasense.org">hello@aurasense.org</a></p>
-      <p>&copy; <span id="year"></span> AuraSense</p>
     </div>
-  </footer>
 
-  <!-- Emergency floating button and settings modal -->
-  <button id="emergencyBtn" class="emergency-btn" aria-label="Emergency. Press to call your emergency contact." title="Emergency">🆘</button>
-
-  <button id="voiceToggle" class="voice-toggle" aria-pressed="false" aria-label="Voice detection. Toggle listening for 'I need help'">🎤</button>
-
-  <div id="emergencyModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="emergencyModalLabel">
-    <div class="modal-content">
-      <h4 id="emergencyModalLabel">Emergency contact</h4>
-      <p>Save the phone number that'll be called or messaged in an emergency.</p>
-      <label for="emergencyName">Name</label>
-      <input id="emergencyName" name="emergencyName" type="text" autocomplete="name" />
-      <label for="emergencyPhone">Phone</label>
-      <input id="emergencyPhone" name="emergencyPhone" type="tel" inputmode="tel" placeholder="+1234567890" />
-
-      <div class="modal-actions">
-        <button id="saveEmergencyBtn" class="cta">Save</button>
-        <button id="closeEmergencyBtn" class="cta ghost">Close</button>
-      </div>
-
-      <p class="hint">You can also say <strong>"I need help"</strong> to trigger the emergency action (enable voice detection first).</p>
-    </div>
-  </div>
-
-  <script src="js/script.js"></script>
+    <script src="js/script.js"></script>
 </body>
+
 </html>
