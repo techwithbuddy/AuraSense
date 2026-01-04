@@ -21,6 +21,24 @@
   announcer.setAttribute('aria-live','polite');
   document.body.appendChild(announcer);
 
+  // Track elements currently being highlighted during speech
+  let highlightedElements = [];
+
+  function addReadingHighlight(element) {
+    if (element && !element.classList.contains('reading-highlight')) {
+      element.classList.add('reading-highlight');
+      highlightedElements.push(element);
+    }
+  }
+
+  function removeReadingHighlights() {
+    highlightedElements.forEach(element => {
+      element.classList.remove('reading-highlight');
+    });
+    highlightedElements = [];
+  }
+
+
   // add a small logout button to header when signed in
   function ensureAuthUI(){
     try{
@@ -88,27 +106,65 @@
     announcer.textContent = msg;
   }
 
-  function speak(text){
+   function speakSequential(elements) {
     if(!('speechSynthesis' in window)){
       announce('Text-to-speech not supported in this browser');
       return;
     }
     window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US';
-    u.rate = 1;
-    window.speechSynthesis.speak(u);
+    removeReadingHighlights();
+    
+    let currentIndex = 0;
+    
+    function speakNext() {
+      if (currentIndex >= elements.length) {
+        removeReadingHighlights();
+        announce('Finished reading page content');
+        return;
+      }
+      
+      const element = elements[currentIndex];
+      if (!element) {
+        currentIndex++;
+        speakNext();
+        return;
+      }
+      
+      removeReadingHighlights(); // Clear previous highlights
+      addReadingHighlight(element); // Highlight current element
+      
+      const text = element.innerText;
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 1;
+      
+      u.onend = function() {
+        currentIndex++;
+        speakNext();
+      };
+      
+      window.speechSynthesis.speak(u);
+    }
+    
+    speakNext();
   }
 
   readBtn.addEventListener('click', ()=>{
     // read a concise summary of the page
-    const parts = [document.getElementById('hero-heading').innerText, document.getElementById('intro').innerText, document.getElementById('assistive-demo-heading').innerText, document.getElementById('how-heading').innerText];
-    speak(parts.join('. '));
+    const elementsToRead = [
+      document.getElementById('hero-heading'),
+      document.getElementById('intro'),
+      document.getElementById('assistive-demo-heading'),
+      document.getElementById('how-heading')
+    ].filter(el => el); // Filter out any null elements
+    
+    speakSequential(elementsToRead);
     announce('Reading page content');
   });
 
   stopBtn.addEventListener('click', ()=>{
     if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    removeReadingHighlights(); // Remove any active highlights
     announce('Stopped reading');
   });
 
@@ -207,4 +263,45 @@
       contactForm.reset();
     });
   }
+
+  // Card hover functionality for reading aloud
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    let hoverTimeout;
+    let currentUtterance = null;
+
+    card.addEventListener('mouseenter', () => {
+      // Clear any existing highlights and speech
+      removeReadingHighlights();
+      if('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      // Get the text content from the card
+      const cardLink = card.querySelector('.card-link');
+      const title = cardLink ? cardLink.querySelector('h4').textContent : '';
+      const description = cardLink ? cardLink.querySelector('p').textContent : '';
+
+      // Add highlight to the card
+      addReadingHighlight(card);
+
+      // Speak the card content
+      const textToSpeak = title + '. ' + description;
+      if('speechSynthesis' in window) {
+        currentUtterance = new SpeechSynthesisUtterance(textToSpeak);
+        currentUtterance.lang = 'en-US';
+        currentUtterance.rate = 1;
+        window.speechSynthesis.speak(currentUtterance);
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      // Stop speech and remove highlight
+      if('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      removeReadingHighlights();
+    });
+  });
+
 })();
