@@ -1,38 +1,44 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>About — AuraSense</title>
-  <meta name="description" content="About AuraSense — mission, features, accessibility specifications, privacy and how to use the site.">
+  <meta name="description"
+    content="About AuraSense — mission, features, accessibility specifications, privacy and how to use the site.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <script>
-    try{
+    try {
       const path = window.location.pathname.split('/').pop();
-      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
-        window.location.replace('login.html');
+      if (localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'index.html' && path !== '') {
+        window.location.replace('index.html');
       }
-    }catch(e){/* ignore */}
+    } catch (e) {/* ignore */ }
   </script>
 </head>
+
 <body>
   <a class="sr-only sr-only-focusable" href="#about-main">Skip to content</a>
 
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="AuraSense home">
-        <svg class="eye-icon" width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" focusable="false" aria-hidden="true">
+      <a class="logo" href="home.html" aria-label="AuraSense home">
+        <svg class="eye-icon" width="28" height="28" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img"
+          focusable="false" aria-hidden="true">
           <defs>
             <linearGradient id="irisG2" x1="0" x2="1">
-              <stop offset="0%" stop-color="#00a896"/>
-              <stop offset="100%" stop-color="#0066cc"/>
+              <stop offset="0%" stop-color="#00a896" />
+              <stop offset="100%" stop-color="#0066cc" />
             </linearGradient>
           </defs>
           <g fill="none" stroke="none">
-            <path d="M32 16C20 16 9.666 24.333 4 32c5.666 7.666 16 16 28 16s22.334-8.334 28-16C54.334 24.333 44 16 32 16z" fill="#eaf6fb"/>
-            <ellipse cx="32" cy="32" rx="10" ry="10" fill="url(#irisG2)"/>
-            <circle cx="32" cy="32" r="5" fill="#041b3b"/>
+            <path
+              d="M32 16C20 16 9.666 24.333 4 32c5.666 7.666 16 16 28 16s22.334-8.334 28-16C54.334 24.333 44 16 32 16z"
+              fill="#eaf6fb" />
+            <ellipse cx="32" cy="32" rx="10" ry="10" fill="url(#irisG2)" />
+            <circle cx="32" cy="32" r="5" fill="#041b3b" />
           </g>
         </svg>
         <span class="logo-text">AuraSense</span>
@@ -43,11 +49,14 @@
 
   <main id="about-main" class="container" role="main" tabindex="-1">
     <h1>About AuraSense</h1>
-    <p class="hint">AuraSense is dedicated to making the web and digital resources accessible for people with visual impairments. Below you'll find our mission, features, accessibility specifications, and privacy notes.</p>
+    <p class="hint">AuraSense is dedicated to making the web and digital resources accessible for people with visual
+      impairments. Below you'll find our mission, features, accessibility specifications, and privacy notes.</p>
 
     <section aria-labelledby="mission-heading">
       <h2 id="mission-heading">Our mission</h2>
-      <p>We provide practical guides, training, assistive-technology recommendations, and community support so people with vision loss can access information and participate fully online. We focus on usability, low-barrier entry, and evidence-based resources.</p>
+      <p>We provide practical guides, training, assistive-technology recommendations, and community support so people
+        with vision loss can access information and participate fully online. We focus on usability, low-barrier entry,
+        and evidence-based resources.</p>
     </section>
 
     <section aria-labelledby="assistive-demo-heading">
@@ -74,21 +83,26 @@
 
     <section aria-labelledby="auth-heading">
       <h2 id="auth-heading">Authentication and the logo</h2>
-      <p>The logo in the header includes a lock badge to convey the authentication and secure aspects of our services. Clicking the logo (from other pages) goes to this page so visitors can learn more about our aims, data handling, and specifications.</p>
-      <p>We do not collect more personal data than necessary for participation. For any authentication features we use standard, secure practices and open standards; details are available on request.</p>
+      <p>The logo in the header includes a lock badge to convey the authentication and secure aspects of our services.
+        Clicking the logo (from other pages) goes to this page so visitors can learn more about our aims, data handling,
+        and specifications.</p>
+      <p>We do not collect more personal data than necessary for participation. For any authentication features we use
+        standard, secure practices and open standards; details are available on request.</p>
     </section>
 
     <section aria-labelledby="use-heading">
       <h2 id="use-heading">How to use this site</h2>
-      <p>Use the keyboard shortcuts shown on the homepage (Alt + R to read, Alt + + / - to resize text). Reach out via the contact form on the home page for help or to request specific accessibility accommodations.</p>
+      <p>Use the keyboard shortcuts shown on the homepage (Alt + R to read, Alt + + / - to resize text). Reach out via
+        the contact form on the home page for help or to request specific accessibility accommodations.</p>
     </section>
 
     <section aria-labelledby="contact-heading">
       <h2 id="contact-heading">Contact & feedback</h2>
-      <p>If you have questions, accessibility feedback, or want to contribute resources, email us at <a href="mailto:hello@aurasense.org">hello@aurasense.org</a>.</p>
+      <p>If you have questions, accessibility feedback, or want to contribute resources, email us at <a
+          href="mailto:hello@aurasense.org">hello@aurasense.org</a>.</p>
     </section>
 
-    <p><a class="cta ghost" href="index.html">Back to home</a></p>
+    <p><a class="cta ghost" href="home.html">Back to home</a></p>
   </main>
 
   <footer role="contentinfo">
@@ -99,4 +113,5 @@
 
   <script src="js/script.js"></script>
 </body>
+
 </html>

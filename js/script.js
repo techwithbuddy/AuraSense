@@ -4,8 +4,8 @@
   try{
     const path = window.location.pathname.split('/').pop();
     const isLogged = localStorage.getItem('aurasense_logged_in') === 'true';
-    if(!isLogged && path !== 'login.html'){
-      window.location.replace('login.html');
+    if(!isLogged && path !== 'index.html' && path !== 'login.html' && path !== ''){
+      window.location.replace('index.html');
     }
   } catch(e){ /* ignore storage failures */ }
 
@@ -59,7 +59,7 @@
           logoutBtn.id = 'logoutBtn';
           logoutBtn.className = 'cta ghost';
           logoutBtn.textContent = 'Log out';
-          logoutBtn.addEventListener('click', ()=>{ localStorage.removeItem('aurasense_logged_in'); localStorage.removeItem('aurasense_user'); window.location.replace('login.html'); });
+          logoutBtn.addEventListener('click', ()=>{ localStorage.removeItem('aurasense_logged_in'); localStorage.removeItem('aurasense_user'); window.location.replace('index.html'); });
           // append into header-actions if available for consistent layout
           if(headerActions) headerActions.appendChild(logoutBtn); else headerInner.appendChild(logoutBtn);
         }
@@ -73,7 +73,7 @@
           signInLink = document.createElement('a');
           signInLink.id = 'signinLink';
           signInLink.className = 'cta';
-          signInLink.href = 'login.html';
+          signInLink.href = 'index.html';
           signInLink.setAttribute('aria-label','Sign in to AuraSense');
           signInLink.textContent = 'Sign in';
           if(headerActions) headerActions.appendChild(signInLink); else headerInner.appendChild(signInLink);
@@ -88,7 +88,7 @@
   const main = document.getElementById('main');
   const year = document.getElementById('year');
 
-  year.textContent = new Date().getFullYear();
+  if(year) year.textContent = new Date().getFullYear();
 
   // dynamically set CSS variable for header offset so fixed header doesn't cover content
   const siteHeader = document.querySelector('.site-header');
@@ -149,13 +149,7 @@
     speakNext();
   }
 
-<<<<<<< HEAD
   function readPageSummary(){
-    const parts = [document.getElementById('hero-heading').innerText, document.getElementById('intro').innerText, document.getElementById('assistive-demo-heading').innerText, document.getElementById('how-heading').innerText];
-    speak(parts.join('. '));
-=======
-  readBtn.addEventListener('click', ()=>{
-    // read a concise summary of the page
     const elementsToRead = [
       document.getElementById('hero-heading'),
       document.getElementById('intro'),
@@ -164,11 +158,14 @@
     ].filter(el => el); // Filter out any null elements
     
     speakSequential(elementsToRead);
->>>>>>> 184530df564d7866e6daa2e94f4dd9139d4c8f39
-    announce('Reading page content');
   }
 
-  readBtn.addEventListener('click', ()=>{ readPageSummary(); });
+  if(readBtn) {
+    readBtn.addEventListener('click', ()=>{ 
+      readPageSummary(); 
+      announce('Reading page content');
+    });
+  }
 
   // Assistive demo: voice-guided navigation and high-contrast preview
   const assistantBtn = document.getElementById('startAssistant');
@@ -187,7 +184,10 @@
     if(t.includes('open menu')){ if(navToggle){ navToggle.click(); announce('Toggling menu'); } return; }
     if(t.includes('high contrast')){ const now = document.documentElement.classList.toggle('high-contrast'); announce(now ? 'High contrast enabled' : 'High contrast disabled'); if(contrastBtn) contrastBtn.setAttribute('aria-pressed', String(now)); return; }
     // fallback help
-    speak('Sorry, I did not understand. Try: read the page, stop, increase font, decrease font, go to contact, open menu, or high contrast.');
+    if('speechSynthesis' in window) {
+      const u = new SpeechSynthesisUtterance('Sorry, I did not understand. Try: read the page, stop, increase font, decrease font, go to contact, open menu, or high contrast.');
+      window.speechSynthesis.speak(u);
+    }
   }
 
   if(assistantBtn){
@@ -222,10 +222,11 @@
   let lastFile = null;
 
   function showPreview(file){
+    if(!imagePreview) return;
     imagePreview.innerHTML = '';
     if(!file) return; const url = URL.createObjectURL(file); const img = document.createElement('img'); img.onload = ()=>{ URL.revokeObjectURL(url); }; img.src = url; imagePreview.appendChild(img); imagePreview.setAttribute('aria-hidden','false'); }
 
-  imageInput && imageInput.addEventListener('change', (e)=>{ const f = e.target.files && e.target.files[0]; lastFile = f || null; showPreview(lastFile); if(!lastFile){ speakDescBtn.disabled=true; imageDescText.textContent=''; lastDescription=''; } });
+  imageInput && imageInput.addEventListener('change', (e)=>{ const f = e.target.files && e.target.files[0]; lastFile = f || null; showPreview(lastFile); if(!lastFile){ if(speakDescBtn) speakDescBtn.disabled=true; if(imageDescText) imageDescText.textContent=''; lastDescription=''; } });
 
   async function tryServerDescribe(file){
     try{
@@ -271,16 +272,29 @@
     // try server first
     desc = await tryServerDescribe(lastFile);
     if(!desc){ desc = await localDescribe(lastFile); desc = desc + ' (local description)'; }
-    lastDescription = desc; imageDescText.textContent = desc; speak(desc); speakDescBtn.disabled=false; describeBtn.disabled=false; announce('Description ready');
+    lastDescription = desc; if(imageDescText) imageDescText.textContent = desc; 
+    if('speechSynthesis' in window) {
+      const u = new SpeechSynthesisUtterance(desc);
+      window.speechSynthesis.speak(u);
+    }
+    if(speakDescBtn) speakDescBtn.disabled=false; describeBtn.disabled=false; announce('Description ready');
   });
 
-  speakDescBtn && speakDescBtn.addEventListener('click', ()=>{ if(lastDescription){ speak(lastDescription); announce('Speaking description'); } });
-
-  stopBtn.addEventListener('click', ()=>{
-    if('speechSynthesis' in window) window.speechSynthesis.cancel();
-    removeReadingHighlights(); // Remove any active highlights
-    announce('Stopped reading');
+  speakDescBtn && speakDescBtn.addEventListener('click', ()=>{ 
+    if(lastDescription && 'speechSynthesis' in window){ 
+      const u = new SpeechSynthesisUtterance(lastDescription);
+      window.speechSynthesis.speak(u);
+      announce('Speaking description'); 
+    } 
   });
+
+  if(stopBtn) {
+    stopBtn.addEventListener('click', ()=>{
+      if('speechSynthesis' in window) window.speechSynthesis.cancel();
+      removeReadingHighlights(); // Remove any active highlights
+      announce('Stopped reading');
+    });
+  }
 
   function setBaseFontSize(size){
     document.documentElement.style.setProperty('--base-font-size', size + 'px');
@@ -291,17 +305,21 @@
     return parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--base-font-size')) || 18;
   }
 
-  increaseBtn.addEventListener('click', ()=>{
-    setBaseFontSize(Math.min(32, getBaseFontSize()+2));
-  });
-  decreaseBtn.addEventListener('click', ()=>{
-    setBaseFontSize(Math.max(12, getBaseFontSize()-2));
-  });
+  if(increaseBtn) {
+    increaseBtn.addEventListener('click', ()=>{
+      setBaseFontSize(Math.min(32, getBaseFontSize()+2));
+    });
+  }
+  if(decreaseBtn) {
+    decreaseBtn.addEventListener('click', ()=>{
+      setBaseFontSize(Math.max(12, getBaseFontSize()-2));
+    });
+  }
 
   // Nav toggle for small screens + animated open/close and underline positioning
   const navUnderline = mainNav ? mainNav.querySelector('.nav-underline') : null;
   function updateNavIndicator(){
-    if(!navUnderline) return;
+    if(!navUnderline || !mainNav) return;
     // find the active link
     const active = mainNav.querySelector('a[aria-current="page"]') || mainNav.querySelector('a');
     if(!active) { navUnderline.style.opacity = '0'; return; }
@@ -352,9 +370,9 @@
   // Keyboard shortcuts
   window.addEventListener('keydown', (e)=>{
     if(!e.altKey) return;
-    if(e.key.toLowerCase() === 'r'){ e.preventDefault(); readBtn.focus(); readBtn.click(); }
-    if(e.key === '+'){ e.preventDefault(); increaseBtn.click(); }
-    if(e.key === '-') { e.preventDefault(); decreaseBtn.click(); }
+    if(e.key.toLowerCase() === 'r' && readBtn){ e.preventDefault(); readBtn.focus(); readBtn.click(); }
+    if(e.key === '+' && increaseBtn){ e.preventDefault(); increaseBtn.click(); }
+    if(e.key === '-' && decreaseBtn) { e.preventDefault(); decreaseBtn.click(); }
   });
 
 
@@ -378,7 +396,6 @@
     });
   }
 
-<<<<<<< HEAD
   // --- Emergency SOS floating button ---
   function getSavedEmergency(){
     try{ return localStorage.getItem('aurasense_emergency'); } catch(e){ return null; }
@@ -420,13 +437,9 @@
   // ensure button on load
   ensureSosButton();
 
-=======
   // Card hover functionality for reading aloud
   const cards = document.querySelectorAll('.card');
   cards.forEach(card => {
-    let hoverTimeout;
-    let currentUtterance = null;
-
     card.addEventListener('mouseenter', () => {
       // Clear any existing highlights and speech
       removeReadingHighlights();
@@ -436,8 +449,8 @@
 
       // Get the text content from the card
       const cardLink = card.querySelector('.card-link');
-      const title = cardLink ? cardLink.querySelector('h4').textContent : '';
-      const description = cardLink ? cardLink.querySelector('p').textContent : '';
+      const title = card.querySelector('h4') ? card.querySelector('h4').textContent : '';
+      const description = card.querySelector('p') ? card.querySelector('p').textContent : '';
 
       // Add highlight to the card
       addReadingHighlight(card);
@@ -445,10 +458,10 @@
       // Speak the card content
       const textToSpeak = title + '. ' + description;
       if('speechSynthesis' in window) {
-        currentUtterance = new SpeechSynthesisUtterance(textToSpeak);
-        currentUtterance.lang = 'en-US';
-        currentUtterance.rate = 1;
-        window.speechSynthesis.speak(currentUtterance);
+        const u = new SpeechSynthesisUtterance(textToSpeak);
+        u.lang = 'en-US';
+        u.rate = 1;
+        window.speechSynthesis.speak(u);
       }
     });
 
@@ -461,5 +474,4 @@
     });
   });
 
->>>>>>> 184530df564d7866e6daa2e94f4dd9139d4c8f39
 })();

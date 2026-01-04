@@ -10,8 +10,8 @@
   <script>
     try{
       const path = window.location.pathname.split('/').pop();
-      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
-        window.location.replace('login.html');
+      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'index.html' && path !== ''){
+        window.location.replace('index.html');
       }
     }catch(e){/* ignore */}
   </script>
@@ -19,7 +19,7 @@
 <body>
   <header class="site-header" role="banner">
     <div class="container header-inner">
-      <a class="logo" href="index.html" aria-label="AuraSense home">AuraSense</a>
+      <a class="logo" href="home.html" aria-label="AuraSense home">AuraSense</a>
     </div>
   </header>
 
@@ -79,7 +79,7 @@
 
     <p class="hint">Result: Users feel supported, motivated, and connected.</p>
 
-    <p><a class="cta ghost" href="index.html">Back to home</a></p>
+    <p><a class="cta ghost" href="home.html">Back to home</a></p>
   </main>
 
   <footer role="contentinfo">
