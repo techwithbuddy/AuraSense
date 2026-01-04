@@ -146,9 +146,27 @@ section{scroll-margin-top:calc(var(--header-offset) + 12px)}
 .sr-tool button{white-space:nowrap}
 
 /* module content details */
-.module-content{background:linear-gradient(180deg,#fff,#fbfbfb);padding:.75rem;border-radius:8px;border:1px solid #eee;margin-top:.5rem}
-.module-content p{margin:.45rem 0}
+.module-content{
+  background:linear-gradient(180deg,#fff,#fbfbfb);
+  padding:.9rem;
+  border-radius:8px;
+  border:1px solid #eee;
+  margin-top:.8rem;
+
+  /* layout into columns with good spacing for labels, examples and audio */
+  display:grid;
+  gap:1rem;
+  grid-template-columns: 1fr 1fr 260px;
+  align-items:start;
+}
+.module-content p{margin:0 0 .5rem}
+.module-content p strong{display:block;margin-bottom:.25rem}
 .module-content .hint{font-size:.95rem}
+.module-content .audio-controls{display:flex;gap:.5rem;align-items:center}
+@media (max-width:800px){
+  .module-content{ grid-template-columns:1fr; padding:.75rem; }
+  .module-content .audio-controls{flex-wrap:wrap}
+}
 
 /* try page */
 .try-hero{padding:1.5rem 0;margin:1rem 0;border-radius:10px;background:linear-gradient(90deg,var(--brand-color),var(--accent));color:#fff}
@@ -232,7 +250,6 @@ footer{border-top:1px solid #e6e6e6;padding:1rem 0;margin-top:2rem}
 
 .hint{color:var(--muted);font-size:.95rem}
 
-<<<<<<< HEAD
 /* Emergency floating button and modal */
 .emergency-btn{
   position:fixed;right:1rem;bottom:1rem;z-index:1100;width:64px;height:64px;border-radius:999px;border:none;display:inline-flex;align-items:center;justify-content:center;font-size:1.6rem;background:linear-gradient(180deg,var(--brand-color),var(--accent));color:#fff;box-shadow:0 12px 30px rgba(0,102,204,0.18);cursor:pointer;transition:transform .12s ease,box-shadow .12s ease;}
@@ -251,7 +268,6 @@ footer{border-top:1px solid #e6e6e6;padding:1rem 0;margin-top:2rem}
 .modal-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:.5rem}
 
 @media (max-width:520px){.emergency-btn{right:.75rem;bottom:.85rem} .voice-toggle{right:.75rem;bottom:6.6rem}}
-=======
 /* login page */
 .login-page{min-height:calc(100vh - var(--header-offset));display:flex;align-items:center;justify-content:center;padding:2rem;background:linear-gradient(180deg, rgba(0,168,150,0.03), rgba(0,102,204,0.02))}
 .login-card{background:linear-gradient(180deg,#fff,#fbfdff);padding:2rem;border-radius:14px;box-shadow:0 24px 60px rgba(2,6,23,0.10);max-width:960px;width:100%;display:grid;grid-template-columns:1fr 360px;gap:1.25rem;align-items:center;transition:transform 260ms cubic-bezier(.2,.9,.3,1),box-shadow 260ms cubic-bezier(.2,.9,.3,1)}
@@ -296,7 +312,6 @@ footer{border-top:1px solid #e6e6e6;padding:1rem 0;margin-top:2rem}
 @media (max-width:900px){
   .login-card{grid-template-columns:1fr}
 }
->>>>>>> 9898bfcdeffe70c113fec722fac537891324b1cc
 
 /* small floating control to allow users to disable animated background */
 .gradient-toggle{

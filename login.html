@@ -8,7 +8,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body class="login-page">
+<body class="login-page" style="background:transparent">
+  <div id="react-background"></div>
   <header class="site-header" role="banner">
     <div class="container header-inner">
       <a class="logo" href="login.html" aria-label="AuraSense — login page">
@@ -186,6 +187,68 @@
       // initial UI update
       updateEmailUI(); updatePwdUI();
     })();
+  </script>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const LoginBackground = () => {
+      const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+      useEffect(() => {
+        const handleMouseMove = (e) => {
+          setMousePos({ x: e.clientX, y: e.clientY });
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+        return () => window.removeEventListener('mousemove', handleMouseMove);
+      }, []);
+
+      const xOffset = (mousePos.x - window.innerWidth / 2) / 40;
+      const yOffset = (mousePos.y - window.innerHeight / 2) / 40;
+
+      return (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: -1,
+          overflow: 'hidden',
+          backgroundColor: '#041b3b' // Fallback color
+        }}>
+          <div style={{
+            position: 'absolute',
+            top: -20,
+            left: -20,
+            width: 'calc(100% + 40px)',
+            height: 'calc(100% + 40px)',
+            backgroundImage: 'url(img/login-bg.png)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            transform: `translate(${xOffset}px, ${yOffset}px)`,
+            transition: 'transform 0.1s ease-out',
+            filter: 'brightness(0.8)'
+          }} />
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'radial-gradient(circle at center, transparent 0%, #041b3b 90%)',
+            opacity: 0.4,
+            pointerEvents: 'none'
+          }} />
+        </div>
+      );
+    };
+
+    const root = ReactDOM.createRoot(document.getElementById('react-background'));
+    root.render(<LoginBackground />);
   </script>
 </body>
 </html>
