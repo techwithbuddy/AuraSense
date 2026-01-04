@@ -76,6 +76,10 @@
           <li id="pwd-length" class="invalid"><span class="dot">✕</span>8 characters or fewer</li>
         </ul>
 
+        <label for="emergency">Emergency contact (phone)</label>
+        <input id="emergency" name="emergency" type="tel" inputmode="tel" placeholder="+1 555 555 5555" required aria-describedby="emergencyHelp" aria-invalid="false">
+        <div id="emergencyHelp" class="field-help" aria-live="polite">We will use this number for SOS calls from the site.</div>
+
         <div style="display:flex;gap:.5rem;align-items:center;margin-top:.5rem;">
           <input id="remember" name="remember" type="checkbox">
           <label for="remember">Remember me</label>
@@ -100,9 +104,10 @@
       const error = document.getElementById('loginError');
       const email = document.getElementById('email');
       const pwd = document.getElementById('password');
+      const emergency = document.getElementById('emergency');
+      const emergencyHelp = document.getElementById('emergencyHelp');
       const submit = form.querySelector('.submit');
       const pwdCounter = document.getElementById('pwdCounter');
-
 
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       function validateEmail(v){ return emailRegex.test(v); }
@@ -113,6 +118,14 @@
           special: /[^A-Za-z0-9]/.test(v),
           length: v.length > 0 && v.length <= 8
         };
+      }
+
+      function normalizePhone(s){ return (s||'').trim().replace(/[^+\d]/g,''); }
+      function validateEmergency(v){
+        const norm = normalizePhone(v);
+        // require at least 7 digits (common for local numbers)
+        const digits = norm.replace(/\D/g,'');
+        return digits.length >= 7;
       }
 
       function updateEmailUI(){
@@ -130,6 +143,17 @@
         }
       }
 
+      function updateEmergencyUI(){
+        if(!emergency) return true;
+        const v = emergency.value.trim();
+        if(!v){ emergencyHelp.textContent = 'We will use this number for SOS calls from the site.'; emergency.classList.remove('input-error'); emergency.setAttribute('aria-invalid','false'); return false; }
+        if(!validateEmergency(v)){
+          emergencyHelp.textContent = 'Please enter a valid phone number with at least 7 digits.';
+          emergency.classList.add('input-error'); emergency.setAttribute('aria-invalid','true'); return false;
+        }
+        emergencyHelp.textContent = 'Number looks good.'; emergency.classList.remove('input-error'); emergency.setAttribute('aria-invalid','false'); return true;
+      }
+
       function updatePwdUI(){
         const v = pwd.value;
         const res = validatePassword(v);
@@ -145,37 +169,47 @@
         // mark field error state
         if(!all){ pwd.classList.add('input-error'); pwd.setAttribute('aria-invalid','true'); }
         else { pwd.classList.remove('input-error'); pwd.setAttribute('aria-invalid','false'); }
-        // enable submit only when email valid and pwd all good
+        // enable submit only when email valid, pwd all good, and emergency valid
         const emailOk = validateEmail(email.value.trim());
-        submit.disabled = !(emailOk && all);
+        const emergencyOk = updateEmergencyUI();
+        submit.disabled = !(emailOk && all && emergencyOk);
       }
 
       email.addEventListener('input', ()=>{ updateEmailUI(); updatePwdUI(); error.textContent = ''; });
       pwd.addEventListener('input', ()=>{ updatePwdUI(); error.textContent = ''; });
+      emergency && emergency.addEventListener('input', ()=>{ updateEmergencyUI(); updatePwdUI(); error.textContent = ''; });
 
       form.addEventListener('submit', function(e){
         e.preventDefault();
         const emailVal = email.value.trim();
         const passVal = pwd.value || '';
+        const emergVal = emergency ? emergency.value.trim() : '';
         const remember = form.remember.checked;
         const emailOk = validateEmail(emailVal);
         const pwdRes = validatePassword(passVal);
         const pwdAll = pwdRes.letter && pwdRes.digit && pwdRes.special && pwdRes.length;
-        if(!emailOk || !pwdAll){
-          error.textContent = 'Please provide a valid email and a password that meets all requirements.';
+        const emergOk = validateEmergency(emergVal);
+        if(!emailOk || !pwdAll || !emergOk){
+          error.textContent = 'Please provide a valid email, a password that meets all requirements, and an emergency contact.';
           // focus first invalid
-          if(!emailOk) email.focus(); else pwd.focus();
+          if(!emailOk) email.focus(); else if(!pwdAll) pwd.focus(); else emergency.focus();
           return;
         }
         // NOTE: This is a demo placeholder. Replace with real authentication for production.
         try{
           localStorage.setItem('aurasense_logged_in', 'true');
+          localStorage.setItem('aurasense_emergency', normalizePhone(emergVal));
           if(remember){ localStorage.setItem('aurasense_user', emailVal); }
         } catch(e){ /* ignore storage failure */ }
         window.location.replace('index.html');
       });
 
       guest.addEventListener('click', function(){
+        // for guests, if a number is present in the form and valid, save it before continuing
+        try{
+          const val = emergency ? emergency.value.trim() : '';
+          if(val && validateEmergency(val)) localStorage.setItem('aurasense_emergency', normalizePhone(val));
+        }catch(e){}
         localStorage.setItem('aurasense_logged_in', 'true');
         window.location.replace('index.html');
       });
@@ -183,8 +217,11 @@
       // If already logged in, skip to home
       try{ if(localStorage.getItem('aurasense_logged_in') === 'true') window.location.replace('index.html'); }catch(e){}
 
+      // pre-fill emergency if we have it saved
+      try{ const saved = localStorage.getItem('aurasense_emergency'); if(saved && emergency){ emergency.value = saved; } }catch(e){}
+
       // initial UI update
-      updateEmailUI(); updatePwdUI();
+      updateEmailUI(); updatePwdUI(); updateEmergencyUI();
     })();
   </script>
 </body>

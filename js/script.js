@@ -314,4 +314,46 @@
       contactForm.reset();
     });
   }
+
+  // --- Emergency SOS floating button ---
+  function getSavedEmergency(){
+    try{ return localStorage.getItem('aurasense_emergency'); } catch(e){ return null; }
+  }
+
+  function ensureSosButton(){
+    let sos = document.getElementById('sosButton');
+    const saved = getSavedEmergency();
+    // default emergency number if user hasn't set one
+    const fallback = '112';
+    const phone = saved || fallback;
+    const href = 'tel:'+phone;
+
+    if(!sos){
+      sos = document.createElement('a');
+      sos.id = 'sosButton';
+      sos.className = 'emergency-btn';
+      sos.href = href;
+      sos.setAttribute('role','button');
+      sos.setAttribute('aria-label','Call emergency contact');
+      sos.title = 'Call emergency contact';
+      sos.setAttribute('tabindex','0');
+      sos.innerHTML = '<span style="font-weight:900;letter-spacing:0.5px">SOS</span>';
+      // Immediately initiate the tel: navigation on click (no confirmation)
+      sos.addEventListener('click', (ev)=>{ ev.preventDefault(); announce('Calling emergency contact'); window.location.href = href; });
+      // support keyboard activation (Enter / Space)
+      sos.addEventListener('keydown', (ev)=>{ if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); announce('Calling emergency contact'); window.location.href = href; } });
+      document.body.appendChild(sos);
+    } else {
+      sos.href = href;
+    }
+  }
+
+  // update across tabs when localStorage changes
+  window.addEventListener('storage', (ev)=>{
+    if(ev.key === 'aurasense_emergency') ensureSosButton();
+  });
+
+  // ensure button on load
+  ensureSosButton();
+
 })();
