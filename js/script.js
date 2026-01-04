@@ -150,6 +150,70 @@
     contrastBtn.addEventListener('click', ()=>{ const now = document.documentElement.classList.toggle('high-contrast'); contrastBtn.setAttribute('aria-pressed', String(now)); announce(now ? 'High contrast enabled' : 'High contrast disabled'); });
   }
 
+  // --- AI Image Description ---
+  const imageInput = document.getElementById('imageInput');
+  const imagePreview = document.getElementById('imagePreview');
+  const describeBtn = document.getElementById('describeBtn');
+  const speakDescBtn = document.getElementById('speakDescBtn');
+  const imageDescText = document.getElementById('imageDescText');
+  let lastDescription = '';
+  let lastFile = null;
+
+  function showPreview(file){
+    imagePreview.innerHTML = '';
+    if(!file) return; const url = URL.createObjectURL(file); const img = document.createElement('img'); img.onload = ()=>{ URL.revokeObjectURL(url); }; img.src = url; imagePreview.appendChild(img); imagePreview.setAttribute('aria-hidden','false'); }
+
+  imageInput && imageInput.addEventListener('change', (e)=>{ const f = e.target.files && e.target.files[0]; lastFile = f || null; showPreview(lastFile); if(!lastFile){ speakDescBtn.disabled=true; imageDescText.textContent=''; lastDescription=''; } });
+
+  async function tryServerDescribe(file){
+    try{
+      const controller = new AbortController();
+      const t = setTimeout(()=>controller.abort(), 11000);
+      const fd = new FormData(); fd.append('image', file);
+      const res = await fetch('/api/describe', {method:'POST',body:fd,signal:controller.signal}); clearTimeout(t);
+      if(!res.ok) return null; const j = await res.json(); if(j && j.description) return j.description; return null;
+    }catch(e){ return null; }
+  }
+
+  function rgbToColorName(r,g,b){
+    const colors = {red:[220,20,60],orange:[255,140,0],yellow:[255,215,0],green:[34,139,34],blue:[30,144,255],purple:[148,0,211],brown:[160,82,45],gray:[128,128,128],black:[8,8,8],white:[245,245,245]};
+    let best='colorful'; let bestD=Infinity;
+    for(const [name,vals] of Object.entries(colors)){
+      const d = Math.hypot(r-vals[0],g-vals[1],b-vals[2]); if(d<bestD){ bestD=d; best=name; }}
+    return best;
+  }
+
+  function localDescribe(file){
+    return new Promise((resolve)=>{
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = ()=>{
+        const w = img.naturalWidth, h = img.naturalHeight; const orientation = w>=h ? 'landscape' : 'portrait';
+        // draw small canvas to sample colors
+        const canvas = document.createElement('canvas'); const sw = 160; canvas.width = sw; canvas.height = Math.round(sw * (h/w)); const ctx = canvas.getContext('2d'); ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        try{
+          const data = ctx.getImageData(0,0,canvas.width,canvas.height).data; let r=0,g=0,b=0,count=0; for(let i=0;i<data.length;i+=16){ r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++; }
+          r=Math.round(r/count); g=Math.round(g/count); b=Math.round(b/count); const color = rgbToColorName(r,g,b);
+          URL.revokeObjectURL(url);
+          resolve(`A ${orientation} photo, ${w} by ${h} pixels, mostly ${color} in tone.`);
+        }catch(e){ URL.revokeObjectURL(url); resolve(`A photo, ${w} by ${h} pixels.`); }
+      };
+      img.onerror = ()=>{ URL.revokeObjectURL(url); resolve('An image was selected but could not be loaded.'); };
+      img.src = url;
+    });
+  }
+
+  describeBtn && describeBtn.addEventListener('click', async ()=>{
+    if(!lastFile){ announce('Please select an image to describe.'); return; }
+    announce('Describing image…'); describeBtn.disabled=true; let desc = null;
+    // try server first
+    desc = await tryServerDescribe(lastFile);
+    if(!desc){ desc = await localDescribe(lastFile); desc = desc + ' (local description)'; }
+    lastDescription = desc; imageDescText.textContent = desc; speak(desc); speakDescBtn.disabled=false; describeBtn.disabled=false; announce('Description ready');
+  });
+
+  speakDescBtn && speakDescBtn.addEventListener('click', ()=>{ if(lastDescription){ speak(lastDescription); announce('Speaking description'); } });
+
   stopBtn.addEventListener('click', ()=>{
     if('speechSynthesis' in window) window.speechSynthesis.cancel();
     announce('Stopped reading');

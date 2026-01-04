@@ -124,12 +124,23 @@
               <button id="contrastDemoBtn" class="control contrast-btn" aria-pressed="false">Toggle high contrast</button>
             </div>
           </article>
+
           <article class="card">
-            <a class="card-link" href="community.html" aria-label="Community and support — groups, volunteers, events">
-              <h4>Community & Support</h4>
-              <p>Peer groups, volunteer programs, and local events.</p>
-            </a>
+            <h4>AI image description</h4>
+            <p>Upload an image and the assistant will describe it in simple, spoken language.</p>
+            <div class="image-desc">
+              <label for="imageInput" class="sr-only">Upload image for description</label>
+              <input id="imageInput" type="file" accept="image/*" aria-describedby="imageDescText" />
+              <div id="imagePreview" class="image-preview" aria-hidden="true"></div>
+              <div class="card-actions">
+                <button id="describeBtn" class="control">Describe</button>
+                <button id="speakDescBtn" class="control" disabled>Speak</button>
+              </div>
+              <div id="imageDescText" class="sr-only" aria-live="polite"></div>
+            </div>
+            <p class="hint">Photos are not uploaded anywhere by default; the demo will attempt a local heuristic unless a backend endpoint is provided at <code>/api/describe</code>.</p>
           </article>
+
         </div>
       </div>
     </section>
