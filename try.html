@@ -1,21 +1,24 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Try — AuraSense</title>
-  <meta name="description" content="Try recommended apps and practice real-life tasks with step-by-step guidance and demo videos.">
+  <meta name="description"
+    content="Try recommended apps and practice real-life tasks with step-by-step guidance and demo videos.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <script>
-    try{
+    try {
       const path = window.location.pathname.split('/').pop();
-      if(localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html'){
+      if (localStorage.getItem('aurasense_logged_in') !== 'true' && path !== 'login.html') {
         window.location.replace('login.html');
       }
-    }catch(e){/* ignore */}
+    } catch (e) {/* ignore */ }
   </script>
 </head>
+
 <body>
   <header class="site-header" role="banner">
     <div class="container header-inner">
@@ -34,9 +37,20 @@
       <h2 id="apps-heading">Apps & Tools</h2>
       <div class="cards">
         <article class="card">
+          <h4>Voice Vision (Beta)</h4>
+          <p>Our custom AI tool that describes what's in front of you. Requires the Python module to be running.</p>
+          <p>
+            <a class="cta" href="http://localhost:8501" target="_blank" rel="noopener">Launch Voice Vision</a>
+            <span class="hint" style="display:block;margin-top:0.4rem;font-size:0.85rem">Make sure `streamlit run
+              index.py` is running!</span>
+          </p>
+        </article>
+
+        <article class="card">
           <h4>Seeing AI</h4>
           <p>OCR and scene recognition; great for reading short text and identifying objects.</p>
-          <p><a class="cta" href="https://www.microsoft.com/en-us/ai/seeing-ai" target="_blank" rel="noopener">Try this app</a></p>
+          <p><a class="cta" href="https://www.microsoft.com/en-us/ai/seeing-ai" target="_blank" rel="noopener">Try this
+              app</a></p>
         </article>
 
         <article class="card">
@@ -48,7 +62,8 @@
         <article class="card">
           <h4>TalkBack / VoiceOver</h4>
           <p>Built-in mobile screen readers for Android and iOS; practice with helpful walkthroughs.</p>
-          <p><a class="cta" href="#" onclick="alert('Open your device settings to enable TalkBack/VoiceOver')">Try steps</a></p>
+          <p><a class="cta" href="#" onclick="alert('Open your device settings to enable TalkBack/VoiceOver')">Try
+              steps</a></p>
         </article>
       </div>
     </section>
@@ -71,14 +86,16 @@
         <article class="card video-card">
           <h4>Screen reader basics (short demo)</h4>
           <div class="video-wrap" aria-hidden="true">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo video" frameborder="0" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo video"
+              frameborder="0" allowfullscreen></iframe>
           </div>
         </article>
 
         <article class="card video-card">
           <h4>Using OCR apps in daily life</h4>
           <div class="video-wrap" aria-hidden="true">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo video" frameborder="0" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Demo video"
+              frameborder="0" allowfullscreen></iframe>
           </div>
         </article>
       </div>
@@ -95,21 +112,23 @@
   </footer>
 
   <script>
-    (function(){
+    (function () {
       const exercises = document.getElementById('exercises');
       const status = document.getElementById('exerciseStatus');
-      function key(){ return 'aurasense_exercises_v1'; }
-      function load(){ try{ return JSON.parse(localStorage.getItem(key())||'{}'); }catch(e){return {}; } }
-      function save(data){ try{ localStorage.setItem(key(), JSON.stringify(data)); }catch(e){}
+      function key() { return 'aurasense_exercises_v1'; }
+      function load() { try { return JSON.parse(localStorage.getItem(key()) || '{}'); } catch (e) { return {}; } }
+      function save(data) {
+        try { localStorage.setItem(key(), JSON.stringify(data)); } catch (e) { }
       }
-      function updateStatus(){ const total = exercises.querySelectorAll('input[type=checkbox]').length; const done = exercises.querySelectorAll('input[type=checkbox]:checked').length; status.textContent = done + ' / ' + total + ' complete'; }
+      function updateStatus() { const total = exercises.querySelectorAll('input[type=checkbox]').length; const done = exercises.querySelectorAll('input[type=checkbox]:checked').length; status.textContent = done + ' / ' + total + ' complete'; }
       // restore
-      const state = load(); exercises.querySelectorAll('input[type=checkbox]').forEach(cb=>{ const id = cb.dataset.id; if(state[id]) cb.checked=true; cb.addEventListener('change', ()=>{ state[id]=cb.checked; save(state); updateStatus(); }); });
-      document.getElementById('resetExercises').addEventListener('click', ()=>{ exercises.querySelectorAll('input[type=checkbox]').forEach(cb=>{ cb.checked=false; state[cb.dataset.id]=false; }); save(state); updateStatus(); });
+      const state = load(); exercises.querySelectorAll('input[type=checkbox]').forEach(cb => { const id = cb.dataset.id; if (state[id]) cb.checked = true; cb.addEventListener('change', () => { state[id] = cb.checked; save(state); updateStatus(); }); });
+      document.getElementById('resetExercises').addEventListener('click', () => { exercises.querySelectorAll('input[type=checkbox]').forEach(cb => { cb.checked = false; state[cb.dataset.id] = false; }); save(state); updateStatus(); });
       updateStatus();
     })();
   </script>
 
   <script src="js/script.js"></script>
 </body>
+
 </html>
