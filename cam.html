@@ -1,30 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>cam access</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Camera AI Detection (YOLOv8)</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; background: #111; color: #eee; }
+    video, canvas { width: 640px; max-width: 95vw; border-radius: 8px; margin-top: 10px; }
+  </style>
 </head>
 <body>
-    <div class="camcontainer">
-        <h1>Camera Access</h1>
-        <video id="video" autoplay playsinline></video>
-    </div>
-    <script>
-        const video = document.getElementById('video');
+  <h1>Camera AI Detection (YOLOv8)</h1>
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="canvas"></canvas>
+  <p id="status">Connecting to YOLOv8 backend...</p>
 
-        // function to start camera
-        async function startCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const statusEl = document.getElementById('status');
 
-                video.srcObject = stream;
-            } catch (error) {
-                console.error('Error accessing camera:', error);
-            }
-        }
-        startCamera();
-    </script>
+    const lastSpoken = new Map();
+    const SPEAK_COOLDOWN = 5000; // ms
+    const CONFIDENCE_THRESHOLD = 0.7;
+
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        await video.play();
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+      } catch (err) {
+        console.error('Camera error:', err);
+      }
+    }
+
+    function speak(text) {
+      const utter = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utter);
+    }
+
+    async function detectFrame() {
+      // Draw current frame
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Capture frame as blob
+      const blob = await new Promise(r => canvas.toBlob(r, "image/jpeg"));
+      const formData = new FormData();
+      formData.append("file", blob, "frame.jpg");
+
+      try {
+        const res = await fetch("http://localhost:8000/detect", {
+          method: "POST",
+          body: formData
+        });
+        const data = await res.json();
+
+        // Draw + announce detections
+        data.detections.forEach(det => {
+          if (det.confidence < CONFIDENCE_THRESHOLD) return;
+
+          // Announce with cooldown
+          const now = Date.now();
+          if (!lastSpoken.has(det.class) || now - lastSpoken.get(det.class) > SPEAK_COOLDOWN) {
+            speak(`I see a ${det.class}`);
+            lastSpoken.set(det.class, now);
+          }
+        });
+
+        statusEl.textContent = `Detected: ${data.detections.map(d => d.class).join(", ")}`;
+      } catch (err) {
+        console.error("Detection error:", err);
+        statusEl.textContent = "Error contacting backend";
+      }
+
+      requestAnimationFrame(detectFrame);
+    }
+
+    (async () => {
+      await startCamera();
+      statusEl.textContent = "Camera ready, detecting...";
+      detectFrame();
+    })();
+  </script>
 </body>
 </html>
+
+    <section aria-labelledby="accessibility-heading">
+      <h2 id="accessibility-heading">Accessibility features</h2>
+      <ul>
+        <li>High-contrast themes and scalable fonts for better readability</li>
+        <li>Keyboard navigation and screen reader compatibility</li>
+        <li>Alt text for all images and descriptive link texts</li>
+        <li>Regular accessibility audits and user feedback integration</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="privacy-heading">
+      <h2 id="privacy-heading">Privacy notes</h2>
+      <p>We respect your privacy. AuraSense does not collect personal data without consent. Any data collected is used
+        solely to improve accessibility features and user experience. For more details, please refer to our Privacy
+        Policy.</p>
+    </section>
+  </main>
+
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">
+      <p>&copy; 2024 AuraSense. All rights reserved.</p>
+    </div>
+  </footer>
