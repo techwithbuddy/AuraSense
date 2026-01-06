@@ -527,6 +527,33 @@
       } else if (greyCards.length === 4 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[1]) && greyCards.includes(circularCards[2]) && greyCards.includes(circularCards[3])) {
         const utterance = new SpeechSynthesisUtterance('this is alphabet G');
         window.speechSynthesis.speak(utterance);
+      }  else if (greyCards.length === 3 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[2]) && greyCards.includes(circularCards[4])) {
+        const utterance = new SpeechSynthesisUtterance('this is alphabet H');
+        window.speechSynthesis.speak(utterance);
+      } else if (greyCards.length === 2 && greyCards.includes(circularCards[2]) && greyCards.includes(circularCards[3])) {
+        const utterance = new SpeechSynthesisUtterance('this is letter I');
+        window.speechSynthesis.speak(utterance);
+      } else if (greyCards.length === 3 && greyCards.includes(circularCards[2]) && greyCards.includes(circularCards[4]) && greyCards.includes(circularCards[3])) {
+        const utterance = new SpeechSynthesisUtterance('this is alphabet J');
+        window.speechSynthesis.speak(utterance);
+      } else if (greyCards.length === 2 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[5])) {
+        const utterance = new SpeechSynthesisUtterance('this is alphabet K');
+        window.speechSynthesis.speak(utterance);
+      } else if (greyCards.length === 3 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[2]) && greyCards.includes(circularCards[5])) {
+        const utterance = new SpeechSynthesisUtterance('this is alphabet L');
+        window.speechSynthesis.speak(utterance);
+      } else if (greyCards.length === 3 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[5]) && greyCards.includes(circularCards[3])) {
+        const utterance = new SpeechSynthesisUtterance('this is letter M');
+        window.speechSynthesis.speak(utterance);
+      } else if (greyCards.length === 4 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[3]) && greyCards.includes(circularCards[4]) && greyCards.includes(circularCards[5])) {
+        const utterance = new SpeechSynthesisUtterance('this is letter N');
+        window.speechSynthesis.speak(utterance);
+      } else if (greyCards.length === 3 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[5]) && greyCards.includes(circularCards[4])) {
+        const utterance = new SpeechSynthesisUtterance('this is letter O');
+        window.speechSynthesis.speak(utterance);
+      } else if (greyCards.length === 4 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[2]) && greyCards.includes(circularCards[1]) && greyCards.includes(circularCards[4])) {
+        const utterance = new SpeechSynthesisUtterance('this is letter P');
+        window.speechSynthesis.speak(utterance);
       }
     });
   }
