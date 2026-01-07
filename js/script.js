@@ -209,7 +209,10 @@
   }
 
   if(contrastBtn){
-    contrastBtn.addEventListener('click', ()=>{ const now = document.documentElement.classList.toggle('high-contrast'); contrastBtn.setAttribute('aria-pressed', String(now)); announce(now ? 'High contrast enabled' : 'High contrast disabled'); });
+    contrastBtn.addEventListener('click', ()=>{ const now = document.documentElement.classList.toggle('high-contrast');
+      siteHeader.classList.toggle('high-contrast', now);
+      Section.classList.toggle('high-contrast', now);
+      contrastBtn.setAttribute('aria-pressed', String(now)); announce(now ? 'High contrast enabled' : 'High contrast disabled'); });
   }
 
   // --- AI Image Description ---
@@ -518,7 +521,7 @@
       } else if (greyCards.length === 3 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[3]) && greyCards.includes(circularCards[4])) {
         const utterance = new SpeechSynthesisUtterance('this is alphabet D');
         window.speechSynthesis.speak(utterance);
-      } else if (greyCards.length === 2 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[4])) {
+      } else if (greyCards.length === 2 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[3])) {
         const utterance = new SpeechSynthesisUtterance('this is alphabet E');
         window.speechSynthesis.speak(utterance);
       } else if (greyCards.length === 3 && greyCards.includes(circularCards[0]) && greyCards.includes(circularCards[3]) && greyCards.includes(circularCards[2])) {

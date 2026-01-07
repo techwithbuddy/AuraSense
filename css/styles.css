@@ -656,7 +656,7 @@ section {
   background: var(--panel);
   padding: .6rem;
   border-radius: 8px;
-  border: 1px solid rgba(15, 23, 42, 0.03)
+  border: 1px solid rgba(0, 0, 0, 0.03)
 }
 
 .video-wrap {
@@ -804,7 +804,7 @@ section {
 }
 
 .control {
-  background: #fff;
+  background: #ffffff;
   border: 1px solid #e4e6eb;
   padding: .5rem .75rem;
   border-radius: 8px;
@@ -860,8 +860,8 @@ section {
 }
 
 .contrast-btn[aria-pressed="true"] {
-  background: linear-gradient(90deg, var(--brand-color), var(--accent));
-  color: #fff
+ background: #000;
+ color: #fff
 }
 
 /* image description UI */
@@ -928,19 +928,32 @@ section {
 }
 
 /* high-contrast */
-.high-contrast {
+.high-contrast{
   background: #000;
-  color: #fff
+  color: #fff;
 }
 
 .high-contrast a {
   color: #fff
 }
 
-.high-contrast .control {
+.high-contrast .control{
   background: #222;
   color: #fff;
   border-color: #444
+}
+
+.high-contrast .hero-grid{
+  background: #000000;
+}
+
+.high-contrast.header-inner{
+  background: #000000;
+  color: #000000;
+}
+
+.high-contrast.showcase-logo:focus {
+  background: #000000;
 }
 
 /* focus */
@@ -1144,7 +1157,7 @@ footer {
 
 /* keep keyboard focus outline but don't trigger hover transforms */
 .showcase-logo:focus {
-  outline: 4px solid rgba(0, 168, 150, 0.12);
+  outline: 4px solid rgba(0, 0, 0, 0.12);
   outline-offset: 6px
 }
 
@@ -1163,7 +1176,7 @@ footer {
 .login-form {
   padding: 1.5rem;
   border-radius: 12px;
-  background: linear-gradient(180deg, rgba(0, 102, 204, 0.03), rgba(0, 168, 150, 0.03));
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.03));
 }
 
 .login-form label {
@@ -1188,7 +1201,7 @@ footer {
   width: 100%;
   padding: .85rem;
   border-radius: 8px;
-  border: 1px solid rgba(2, 6, 23, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: .45rem;
   background: #fff
 }
