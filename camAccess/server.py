@@ -7,6 +7,7 @@ import numpy as np
 
 app = FastAPI()
 
+
 # Allow browser requests
 app.add_middleware(
     CORSMiddleware,

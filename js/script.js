@@ -611,6 +611,8 @@ if (localStorage.getItem('contrast') === 'on') {
     });
   }
 
+ 
+
   // Reset button
   const resetBtn = document.getElementById('reset-dots');
   if (resetBtn) {
@@ -628,5 +630,14 @@ if (localStorage.getItem('contrast') === 'on') {
       }
     });
   }
+
+   fetch("https://aurasense-1.onrender.com")
+  .then(response => response.json())   // convert response to JSON
+  .then(data => {
+    console.log(data);                 // do something with the data
+  })
+  .catch(error => {
+    console.error("Error:", error);    // handle errors
+  });
 
 })();
