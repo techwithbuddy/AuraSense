@@ -928,32 +928,64 @@ section {
 }
 
 /* high-contrast */
+
+
 .high-contrast{
   background: #000;
   color: #fff;
+  color: #f1fd0e;
 }
 
 .high-contrast a {
-  color: #fff
+  color: #f1fd0e
 }
 
 .high-contrast .control{
   background: #222;
-  color: #fff;
-  border-color: #444
+  color: #f1fd0e;
+  border-color: #0e0e0e
 }
 
 .high-contrast .hero-grid{
   background: #000000;
+  color: #f1fd0e;
 }
 
 .high-contrast.header-inner{
   background: #000000;
-  color: #000000;
+  color: #f1fd0e;
+}
+
+.high-contrast .site-header {
+  background: #000000;
+  border-color: #ffffff;
+  color: #f1fd0e;
 }
 
 .high-contrast.showcase-logo:focus {
   background: #000000;
+}
+
+.high-contrast .nav-horizontal a {
+  background: #000000;
+  color: #f1fd0e;
+  border-color: #ffffff;
+}
+
+.high-contrast .container{
+  background: #000000;
+  color: #f1fd0e;
+}
+
+.high-contrast .testimonial {
+  background: #222;
+  color: #f1fd0e;
+  border-color: #0e0e0e;
+}
+
+.high-contrast .containerheader-inner {
+  background: #000000;
+  color: #f1fd0e;
 }
 
 /* focus */

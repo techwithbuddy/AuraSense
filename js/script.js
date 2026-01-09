@@ -208,13 +208,37 @@
     });
   }
 
-  if(contrastBtn){
+  /*if(contrastBtn){
     contrastBtn.addEventListener('click', ()=>{ const now = document.documentElement.classList.toggle('high-contrast');
       siteHeader.classList.toggle('high-contrast', now);
       Section.classList.toggle('high-contrast', now);
       contrastBtn.setAttribute('aria-pressed', String(now)); announce(now ? 'High contrast enabled' : 'High contrast disabled'); });
-  }
+  }*/
 
+      if (contrastBtn) {
+  contrastBtn.addEventListener('click', () => {
+    const now = document.documentElement.classList.toggle('high-contrast');
+    siteHeader.classList.toggle('high-contrast', now);
+    Section.classList.toggle('high-contrast', now);
+    contrastBtn.setAttribute('aria-pressed', String(now));
+    localStorage.setItem('contrast', now ? 'on' : 'off'); // save choice
+    announce(now ? 'High contrast enabled' : 'High contrast disabled');
+    
+
+  });
+}
+
+if (localStorage.getItem('contrast') === 'on') {
+  document.documentElement.classList.add('high-contrast');
+  siteHeader.classList.add('high-contrast');
+  Section.classList.add('high-contrast');
+  if (contrastBtn) {
+    contrastBtn.setAttribute('aria-pressed', 'true');
+  }
+}
+
+
+  
   // --- AI Image Description ---
   const imageInput = document.getElementById('imageInput');
   const imagePreview = document.getElementById('imagePreview');
