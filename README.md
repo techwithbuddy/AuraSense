@@ -45,7 +45,7 @@ These are client-side demos. For deeper features (server-side logs, remote assis
 ⚡ Performance Note
 - Running the backend locally with uvicorn gives smoother real‑time camera detection than the Render deployment.
 - Render’s free tier has higher latency, so for demos we recommend testing with:
-uvicorn server:app --reload --host 0.0.0.0 --port 8000
+  uvicorn camAccess.server:app --reload --host 0.0.0.0 --port 8000
 - Access at http://localhost:8000/detect.
 
 
