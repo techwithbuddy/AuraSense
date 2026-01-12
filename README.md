@@ -41,6 +41,14 @@ The **Assistive demo** now includes:
 
 These are client-side demos. For deeper features (server-side logs, remote assistance), we can add backend integrations on request.
 
+## Real time object detection 
+⚡ Performance Note
+- Running the backend locally with uvicorn gives smoother real‑time camera detection than the Render deployment.
+- Render’s free tier has higher latency, so for demos we recommend testing with:
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+- Access at http://localhost:8000/detect.
+
+
 #### AI Image Description
 
 - Upload an image and the assistant will describe it aloud in simple language.
