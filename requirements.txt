@@ -5,3 +5,8 @@ opencv-python
 torch
 ultralytics
 numpy
+streamlit
+google-generativeai
+pillow
+gtts
+python-dotenv

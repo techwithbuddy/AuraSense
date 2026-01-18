@@ -4,10 +4,19 @@ from PIL import Image
 from gtts import gTTS
 import base64
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # 1. Configuration
-genai.configure(api_key="AIzaSyCGsXpM8Bk-n3mP65HhdwSIeO0GqRbtnB4")
-model = genai.GenerativeModel('gemini-2.5-flash')
+api_key = os.getenv("GROQ_API_KEY") or os.getenv("GOOGLE_API_KEY")
+if not api_key:
+    st.error("API key not found. Please set GROQ_API_KEY or GOOGLE_API_KEY in your .env file")
+    st.stop()
+
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel('models/gemini-2.0-flash-exp')
 
 def speak_text(text):
     """Function to convert text to speech and play it automatically"""
@@ -30,10 +39,6 @@ st.set_page_config(
     page_icon="👁️",
     layout="centered"
 )
-
-# --------- GEMINI CONFIG ----------
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel("gemini-1.5-flash")
 
 
 # --------- CUSTOM ACCESSIBLE FRONTEND ----------
@@ -85,7 +90,9 @@ if img:
     with st.spinner("Analyzing surroundings"):
         prompt = (
             "You are an assistant for a visually impaired person. "
-            "Describe the scene in one or two short, clear sentences."
+            "First, read and report ALL visible text in the image word-for-word. "
+            "Then describe the scene, objects, and environment in 1-2 clear sentences. "
+            "If there is no text, just describe what you see."
         )
         response = model.generate_content([prompt, image])
         description = response.text

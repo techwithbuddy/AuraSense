@@ -38,6 +38,90 @@
     highlightedElements = [];
   }
 
+  // Tab key navigation voice announcement
+  function getFocusedElementText(element) {
+    if (!element) return '';
+    
+    // Get the visible text content
+    let text = '';
+    
+    // Check for aria-label (most descriptive)
+    if (element.getAttribute('aria-label')) {
+      text = element.getAttribute('aria-label');
+    }
+    // Check for alt text (images)
+    else if (element.tagName === 'IMG' && element.alt) {
+      text = 'Image: ' + element.alt;
+    }
+    // Check for placeholder (inputs)
+    else if (element.placeholder) {
+      text = element.placeholder;
+    }
+    // Check for value (inputs with values)
+    else if (element.value && (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA')) {
+      text = element.value;
+    }
+    // Check for title attribute
+    else if (element.title) {
+      text = element.title;
+    }
+    // Get visible text content
+    else if (element.textContent && element.textContent.trim()) {
+      text = element.textContent.trim();
+    }
+    // Check for role
+    else if (element.getAttribute('role')) {
+      text = element.getAttribute('role') + ' element';
+    }
+    // Fall back to tag name
+    else {
+      text = element.tagName.toLowerCase();
+    }
+    
+    // Add element type info for form elements
+    if (element.tagName === 'INPUT') {
+      const type = element.type || 'text';
+      text = type + ' input: ' + text;
+    } else if (element.tagName === 'BUTTON') {
+      text = 'Button: ' + text;
+    } else if (element.tagName === 'A') {
+      text = 'Link: ' + text;
+    } else if (element.tagName === 'SELECT') {
+      text = 'Dropdown: ' + text;
+    }
+    
+    // Limit length to avoid very long announcements
+    if (text.length > 150) {
+      text = text.substring(0, 147) + '...';
+    }
+    
+    return text;
+  }
+
+  // Listen for Tab key press and announce focused element
+  let lastFocusedElement = null;
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+      // Wait a moment for focus to change
+      setTimeout(() => {
+        const focused = document.activeElement;
+        if (focused && focused !== document.body && focused !== lastFocusedElement) {
+          lastFocusedElement = focused;
+          const text = getFocusedElementText(focused);
+          if (text && 'speechSynthesis' in window) {
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            // Speak the focused element
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.rate = 1.2; // Slightly faster for better navigation experience
+            utterance.volume = 1.0;
+            window.speechSynthesis.speak(utterance);
+          }
+        }
+      }, 50);
+    }
+  });
+
 
   // add a small logout button to header when signed in
   function ensureAuthUI(){
@@ -238,82 +322,6 @@ if (localStorage.getItem('contrast') === 'on') {
 }
 
 
-  
-  // --- AI Image Description ---
-  const imageInput = document.getElementById('imageInput');
-  const imagePreview = document.getElementById('imagePreview');
-  const describeBtn = document.getElementById('describeBtn');
-  const speakDescBtn = document.getElementById('speakDescBtn');
-  const imageDescText = document.getElementById('imageDescText');
-  let lastDescription = '';
-  let lastFile = null;
-
-  function showPreview(file){
-    if(!imagePreview) return;
-    imagePreview.innerHTML = '';
-    if(!file) return; const url = URL.createObjectURL(file); const img = document.createElement('img'); img.onload = ()=>{ URL.revokeObjectURL(url); }; img.src = url; imagePreview.appendChild(img); imagePreview.setAttribute('aria-hidden','false'); }
-
-  imageInput && imageInput.addEventListener('change', (e)=>{ const f = e.target.files && e.target.files[0]; lastFile = f || null; showPreview(lastFile); if(!lastFile){ if(speakDescBtn) speakDescBtn.disabled=true; if(imageDescText) imageDescText.textContent=''; lastDescription=''; } });
-
-  async function tryServerDescribe(file){
-    try{
-      const controller = new AbortController();
-      const t = setTimeout(()=>controller.abort(), 11000);
-      const fd = new FormData(); fd.append('image', file);
-      const res = await fetch('/api/describe', {method:'POST',body:fd,signal:controller.signal}); clearTimeout(t);
-      if(!res.ok) return null; const j = await res.json(); if(j && j.description) return j.description; return null;
-    }catch(e){ return null; }
-  }
-
-  function rgbToColorName(r,g,b){
-    const colors = {red:[220,20,60],orange:[255,140,0],yellow:[255,215,0],green:[34,139,34],blue:[30,144,255],purple:[148,0,211],brown:[160,82,45],gray:[128,128,128],black:[8,8,8],white:[245,245,245]};
-    let best='colorful'; let bestD=Infinity;
-    for(const [name,vals] of Object.entries(colors)){
-      const d = Math.hypot(r-vals[0],g-vals[1],b-vals[2]); if(d<bestD){ bestD=d; best=name; }}
-    return best;
-  }
-
-  function localDescribe(file){
-    return new Promise((resolve)=>{
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      img.onload = ()=>{
-        const w = img.naturalWidth, h = img.naturalHeight; const orientation = w>=h ? 'landscape' : 'portrait';
-        // draw small canvas to sample colors
-        const canvas = document.createElement('canvas'); const sw = 160; canvas.width = sw; canvas.height = Math.round(sw * (h/w)); const ctx = canvas.getContext('2d'); ctx.drawImage(img,0,0,canvas.width,canvas.height);
-        try{
-          const data = ctx.getImageData(0,0,canvas.width,canvas.height).data; let r=0,g=0,b=0,count=0; for(let i=0;i<data.length;i+=16){ r+=data[i]; g+=data[i+1]; b+=data[i+2]; count++; }
-          r=Math.round(r/count); g=Math.round(g/count); b=Math.round(b/count); const color = rgbToColorName(r,g,b);
-          URL.revokeObjectURL(url);
-          resolve(`A ${orientation} photo, ${w} by ${h} pixels, mostly ${color} in tone.`);
-        }catch(e){ URL.revokeObjectURL(url); resolve(`A photo, ${w} by ${h} pixels.`); }
-      };
-      img.onerror = ()=>{ URL.revokeObjectURL(url); resolve('An image was selected but could not be loaded.'); };
-      img.src = url;
-    });
-  }
-
-  describeBtn && describeBtn.addEventListener('click', async ()=>{
-    if(!lastFile){ announce('Please select an image to describe.'); return; }
-    announce('Describing image…'); describeBtn.disabled=true; let desc = null;
-    // try server first
-    desc = await tryServerDescribe(lastFile);
-    if(!desc){ desc = await localDescribe(lastFile); desc = desc + ' (local description)'; }
-    lastDescription = desc; if(imageDescText) imageDescText.textContent = desc; 
-    if('speechSynthesis' in window) {
-      const u = new SpeechSynthesisUtterance(desc);
-      window.speechSynthesis.speak(u);
-    }
-    if(speakDescBtn) speakDescBtn.disabled=false; describeBtn.disabled=false; announce('Description ready');
-  });
-
-  speakDescBtn && speakDescBtn.addEventListener('click', ()=>{ 
-    if(lastDescription && 'speechSynthesis' in window){ 
-      const u = new SpeechSynthesisUtterance(lastDescription);
-      window.speechSynthesis.speak(u);
-      announce('Speaking description'); 
-    } 
-  });
 
   if(stopBtn) {
     stopBtn.addEventListener('click', ()=>{
